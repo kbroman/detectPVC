@@ -34,12 +34,19 @@ detect_rpeaks_sliding <-
         this_window <- starts[i] + 1:window - 1
         this_window <- this_window[this_window <= length(signal)]
 
-        this_result <- rsleep::detect_rpeaks(signal[this_window], sRate=sRate, ..., return_index=return_index)
+        this_result <- rsleep::detect_rpeaks(signal[this_window], sRate=sRate, ..., return_index=TRUE)
 
-        if(return_index) this_result <- this_result + starts[i]-1
+        this_result <- this_result + starts[i]-1
 
         result <- c(result, this_result)
     }
 
-    sort(unique(result))
+    result <- sort(unique(result)) # this is the result if return_index = TRUE
+
+    if(!return_index) { # convert to times
+        times <- seq(0, by=1/sRate, length.out = length(signal))
+        result <- times[result + 1] # not sure why the +1, but...
+    }
+
+    result
 }
