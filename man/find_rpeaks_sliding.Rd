@@ -29,3 +29,7 @@ find_rpeaks_sliding(
 \description{
 Detect R peaks in a raw ECG signal, using \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}} but using a sliding window.
 }
+\examples{
+data(h10)
+peaks <- find_rpeaks_sliding(h10$ecg)
+}

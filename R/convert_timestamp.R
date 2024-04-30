@@ -11,13 +11,18 @@
 #' @importFrom lubridate as_datetime
 #'
 #' @export
+#'
+#' @examples
+#' data(h10)
+#' ts <- convert_timestamp(h10[,1])
+#' h10 <- cbind(h10, ts)
 
 convert_timestamp <-
     function(timestamp, tz=Sys.timezone())
 {
     datetime <- lubridate::as_datetime(timestamp/1e9, tz=tz)
 
-    seconds <- timestamp/1e9 - as.integer(datetime)
+    frac_sec <- timestamp/1e9 - as.integer(datetime)
 
-    data.frame(datetime=datetime, seconds=seconds)
+    data.frame(datetime=datetime, frac_sec=frac_sec)
 }

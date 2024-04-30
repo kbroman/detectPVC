@@ -17,3 +17,8 @@ A data.frame with two columns: a DateTime vector and a fraction seconds remainde
 \description{
 Convert the date/time stamp in the Polar H10 data to two columns: date/time and fractional seconds
 }
+\examples{
+data(h10)
+ts <- convert_timestamp(h10[,1])
+h10 <- cbind(h10, ts)
+}
