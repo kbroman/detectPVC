@@ -33,3 +33,6 @@ Detect R peaks in a raw ECG signal, using \code{\link[rsleep:detect_rpeaks]{rsle
 data(h10)
 peaks <- detect_rpeaks_sliding(h10$ecg)
 }
+\seealso{
+\code{\link[=adjust_rpeaks]{adjust_rpeaks()}}
+}

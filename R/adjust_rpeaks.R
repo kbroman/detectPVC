@@ -1,0 +1,28 @@
+#' Adjust R peaks to hit local max
+#'
+#' Adjust the estimated R peaks from [rsleep::detect_rpeaks()] to hit the local maximum.
+#'
+#' @param peaks Estimated R peaks (as index)
+#'
+#' @param signal ECG signal vector
+#'
+#' @param window Window (+/-) to look for the local peak
+#'
+#' @return Vector of peaks, adjusted to hit the local max
+#'
+#' @seealso [detect_rpeaks_sliding()]
+#'
+#' @export
+#'
+#' @examples
+#' data(h10)
+#' peaks <- detect_rpeaks_sliding(h10$ecg)
+#' peaks_adj <- adjust_rpeaks(peaks, h10$ecg)
+
+adjust_rpeaks <-
+    function(peaks, signal, window=10)
+{
+
+    vapply(peaks, function(a) { v <- (a-window):(a+window); v[which.max(signal[v])] }, 1)
+
+}

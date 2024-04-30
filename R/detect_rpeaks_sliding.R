@@ -16,6 +16,8 @@
 #'
 #' @importFrom rsleep detect_rpeaks
 #'
+#' @seealso [adjust_rpeaks()]
+#'
 #'
 #' @export
 #'
@@ -42,6 +44,10 @@ detect_rpeaks_sliding <-
     }
 
     result <- sort(unique(result)) # this is the result if return_index = TRUE
+
+    if(adjust) {  # adjust the peaks to hit the maxima
+        result <- adjust_rpeaks(result, signal)
+    }
 
     if(!return_index) { # convert to times
         times <- seq(0, by=1/sRate, length.out = length(signal))
