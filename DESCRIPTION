@@ -10,7 +10,6 @@ Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
 Depends:
     R (>= 3.1.0)
 Imports:
-    utils,
     rsleep,
     lubridate
 Suggests:
