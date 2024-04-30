@@ -27,7 +27,19 @@ detect_rpeaks_sliding <-
     function(signal, window=2.5e5, sRate=1e9/7682304,
              ..., return_index=TRUE, adjust=TRUE)
 {
-    peaks <- rsleep::detect_rpeaks(signal, sRate=sRate, ..., return_index=return_index)
+    starts <- seq(1, length(signal), by=window/2)
 
-    peaks
+    result <- NULL
+    for(i in seq_along(starts)) {
+        this_window <- starts[i] + 1:window - 1
+        this_window <- this_window[this_window <= length(signal)]
+
+        this_result <- rsleep::detect_rpeaks(signal[this_window], sRate=sRate, ..., return_index=return_index)
+
+        if(return_index) this_result <- this_result + starts[i]-1
+
+        result <- c(result, this_result)
+    }
+
+    sort(unique(result))
 }
