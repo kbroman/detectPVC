@@ -1,0 +1,30 @@
+Package: detectPVC
+Version: 0.1.1
+Date: 2024-04-30
+Title: Detect premature venticular complexes
+Description: Detect premature ventricular complexes (PVCs) in data from a Polar H10 chest-strap heart rate sensor.
+Author: Karl W Broman [aut, cre] (<https://orcid.org/0000-0002-4914-6671>)
+Maintainer: Karl W Broman <broman@wisc.edu>
+Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
+             email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")))
+Depends:
+    R (>= 3.1.0)
+Imports:
+    utils,
+    rsleep,
+    lubridate
+Suggests:
+    testthat,
+    devtools,
+    roxygen2,
+    knitr,
+    rmarkdown
+License: MIT + file LICENSE
+URL: https://github.com/kbroman/detectPVC
+BugReports: https://github.com/kbroman/detectPVC/issues
+LazyData: true
+Encoding: UTF-8
+ByteCompile: true
+VignetteBuilder: knitr
+RoxygenNote: 7.3.1
+Roxygen: list(markdown=TRUE)
