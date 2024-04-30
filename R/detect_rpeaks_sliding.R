@@ -21,9 +21,9 @@
 #'
 #' @examples
 #' data(h10)
-#' peaks <- find_rpeaks_sliding(h10$ecg)
+#' peaks <- detect_rpeaks_sliding(h10$ecg)
 
-find_rpeaks_sliding <-
+detect_rpeaks_sliding <-
     function(signal, window=2.5e5, sRate=1e9/7682304,
              ..., return_index=TRUE, adjust=TRUE)
 {
