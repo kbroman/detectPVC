@@ -8,7 +8,7 @@ Maintainer: Karl W Broman <broman@wisc.edu>
 Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
              email="broman@wisc.edu", comment=c(ORCID = "0000-0002-4914-6671")))
 Depends:
-    R (>= 3.1.0)
+    R (>= 3.5.0)
 Imports:
     rsleep,
     lubridate
