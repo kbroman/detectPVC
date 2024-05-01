@@ -1,0 +1,83 @@
+---
+title: detectPVC User Guide
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{detectPVC User Guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8](inputenc)
+---
+
+```{r knitr_options, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.width=9, fig.height=4.5,
+               dev.args=list(pointsize=16))
+```
+
+
+detectPVC is an R package to detect premature ventricular complexes (PVCs) in data from a [Polar
+H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor) chest-strap heart rate sensor.
+
+We have used the [ECGLogger app](https://www.ecglogger.com/) on an iPhone
+to extract the Polar H10 data as a CSV file (or really a series of CSV
+files, in one hour blocks), and the [rsleep](https://rsleep.org/)
+package to detect R peaks in the ECG signal.
+
+
+### Usage
+
+The library comes with a ~40 sec sample data set, `h10`.
+
+```{r}
+library(detectPVC)
+data(h10)
+```
+
+We can add a column with the time in seconds from the first
+measurement.
+
+```{r}
+h10$time_sec <- (h10$time - h10$time[1])/1e9
+```
+
+We use `detect_peaks()` to detect R peaks in the ECG trace.
+
+```{r}
+peaks <- detect_peaks(h10$ecg)
+```
+
+Plot the data, and add vertical lines at the peaks
+
+```{r}
+par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
+plot(h10$time_sec, h10$ecg, type="l", xlab="time (sec)", ylab="ecg")
+abline(v=h10$time_sec[peaks], lty=2, col="red")
+```
+
+Use `calc_peak_stats()` to calculate some statistics about each peak.
+
+```{r}
+peak_stats <- calc_peak_stats(peaks, h10$ecg)
+```
+
+The statistics `pmin` and `leftRR` seem particularly good for
+identifying the PVCs.
+
+```{r}
+par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
+plot(peak_stats$pmin, peak_stats$leftRR, xlab="peak min", ylab="left RR")
+```
+
+We can then label the `r sum(pvc)` PVCs with pink dots, and the others with green
+dots.
+
+```{r}
+par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
+plot(h10$time_sec, h10$ecg, type="l", xlab="time (sec)", ylab="ecg")
+pvc <- (peak_stats$pmin > -0.45)
+points(h10$time_sec[peaks[pvc]], peak_stats$pmax[pvc], pch=16, col="violetred")
+points(h10$time_sec[peaks[!pvc]], peak_stats$pmax[!pvc], pch=16, col="green3")
+```
+
+In this 40 second window, there are `r sum(pvc)` PVCs in `r length(pvc)` total beats.
+
+---
