@@ -36,5 +36,6 @@ calc_peak_stats <-
 
     result$RRratio <- result$leftRR/result$rightRR
 
+    rownames(result) <- peaks
     result
 }
