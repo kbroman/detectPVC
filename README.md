@@ -5,7 +5,7 @@
 R package to detect premature ventricular complexes (PVCs) in data from a [Polar
 H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor) chest-strap heart rate sensor.
 
-I'm using the [ECGLogger app](https://www.ecglogger.com/) on an iPhone
+We have used the [ECGLogger app](https://www.ecglogger.com/) on an iPhone
 to extract the Polar H10 data as a CSV file (or really a series of CSV
 files, in one hour blocks), and the [rsleep](https://rsleep.org/)
 package to detect R peaks in the ECG signal.
@@ -25,7 +25,7 @@ You first need to install the
 install.packages("remotes")
 ```
 
-Then use `remotes::install_github()` to install R/GNapi.
+Then use `remotes::install_github()`:
 
 ```{r}
 library(remotes)
