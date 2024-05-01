@@ -2,7 +2,7 @@
 #'
 #' Get summary statistics for each R peak from ECG data, to help characterize which are normal and which are PVCs
 #'
-#' @param peaks Location of R peaks as numeric indexes (from [detect_rpeaks_sliding()] with `return_index=TRUE`)
+#' @param peaks Location of R peaks as numeric indexes (from [detect_peaks()] with `return_index=TRUE`)
 #'
 #' @param signal Vector of ECG signal
 #'
@@ -18,10 +18,10 @@
 #'
 #' @examples
 #' data(h10)
-#' peaks <- detect_rpeaks_sliding(h10$ecg)
-#' peakstats <- get_rpeaks_stats(peaks, h10$ecg)
+#' peaks <- detect_peaks(h10$ecg)
+#' peakstats <- get_peak_stats(peaks, h10$ecg)
 
-get_rpeaks_stats <-
+get_peak_stats <-
     function(peaks, signal, window=10, qtmax=60)
 {
     diff_peaks <- diff(peaks)

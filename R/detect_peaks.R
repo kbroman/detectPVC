@@ -16,16 +16,16 @@
 #'
 #' @importFrom rsleep detect_rpeaks
 #'
-#' @seealso [adjust_rpeaks()]
+#' @seealso [adjust_peaks()]
 #'
 #'
 #' @export
 #'
 #' @examples
 #' data(h10)
-#' peaks <- detect_rpeaks_sliding(h10$ecg)
+#' peaks <- detect_peaks(h10$ecg)
 
-detect_rpeaks_sliding <-
+detect_peaks <-
     function(signal, window=2.5e5, sRate=1e9/7682304,
              ..., return_index=TRUE, adjust=TRUE)
 {
@@ -46,7 +46,7 @@ detect_rpeaks_sliding <-
     result <- sort(unique(result)) # this is the result if return_index = TRUE
 
     if(adjust) {  # adjust the peaks to hit the maxima
-        result <- unique( adjust_rpeaks(result, signal) )
+        result <- unique( adjust_peaks(result, signal) )
     }
 
     if(!return_index) { # convert to times

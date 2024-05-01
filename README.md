@@ -42,18 +42,18 @@ measurement.
 
     h10$time_sec <- (h10$time - h10$time[1])/1e9
 
-We use `detect_rpeaks_sliding()` to detect R peaks in the ECG trace.
+We use `detect_peaks()` to detect R peaks in the ECG trace.
 
-    peaks <- detect_rpeaks_sliding(h10$ecg)
+    peaks <- detect_peaks(h10$ecg)
 
 Plot the data, and add vertical lines at the peaks
 
     plot(h10$time_sec, h10$ecg, type="l")
     abline(v=h10$time_sec[peaks], lty=2, col="red")
 
-Use `get_rpeaks_stats()` to calculate some statistics about each peak.
+Use `get_peak_stats()` to calculate some statistics about each peak.
 
-    peak_stats <- get_rpeaks_stats(peaks, h10$ecg)
+    peak_stats <- get_peak_stats(peaks, h10$ecg)
 
 The statistics `pmin` and `leftRR` seem particularly good for
 identifying the PVCs.

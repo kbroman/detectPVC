@@ -10,16 +10,16 @@
 #'
 #' @return Vector of peaks, adjusted to hit the local max
 #'
-#' @seealso [detect_rpeaks_sliding()]
+#' @seealso [detect_peaks()]
 #'
 #' @export
 #'
 #' @examples
 #' data(h10)
-#' peaks <- detect_rpeaks_sliding(h10$ecg)
-#' peaks_adj <- adjust_rpeaks(peaks, h10$ecg)
+#' peaks <- detect_peaks(h10$ecg)
+#' peaks_adj <- adjust_peaks(peaks, h10$ecg)
 
-adjust_rpeaks <-
+adjust_peaks <-
     function(peaks, signal, window=10)
 {
 
