@@ -67,7 +67,7 @@ par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
 plot(peak_stats$pmin, peak_stats$leftRR, xlab="peak min", ylab="left RR")
 ```
 
-We can then label the `r sum(pvc)` PVCs with pink dots, and the others with green
+We can then label the `r sum(peak_stats$pmin > -0.45)` PVCs with pink dots, and the others with green
 dots.
 
 ```{r}
