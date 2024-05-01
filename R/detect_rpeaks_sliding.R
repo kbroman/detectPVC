@@ -46,7 +46,7 @@ detect_rpeaks_sliding <-
     result <- sort(unique(result)) # this is the result if return_index = TRUE
 
     if(adjust) {  # adjust the peaks to hit the maxima
-        result <- adjust_rpeaks(result, signal)
+        result <- unique( adjust_rpeaks(result, signal) )
     }
 
     if(!return_index) { # convert to times
