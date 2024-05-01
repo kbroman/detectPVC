@@ -6,7 +6,7 @@
 #'
 #' @param tz Timezone
 #'
-#' @return A data.frame with two columns: a DateTime vector and a fraction seconds remainder
+#' @return A vector of Date objects
 #'
 #' @importFrom lubridate as_datetime
 #'
@@ -15,14 +15,10 @@
 #' @examples
 #' data(h10)
 #' ts <- convert_timestamp(h10[,1])
-#' h10 <- cbind(h10, ts)
+#' h10 <- cbind(h10, datetime=ts)
 
 convert_timestamp <-
     function(timestamp, tz=Sys.timezone())
 {
-    datetime <- lubridate::as_datetime(timestamp/1e9, tz=tz)
-
-    frac_sec <- timestamp/1e9 - as.integer(datetime)
-
-    data.frame(datetime=datetime, frac_sec=frac_sec)
+    lubridate::as_datetime(timestamp/1e9, tz=tz)
 }

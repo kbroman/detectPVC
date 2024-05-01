@@ -12,7 +12,7 @@ convert_timestamp(timestamp, tz = Sys.timezone())
 \item{tz}{Timezone}
 }
 \value{
-A data.frame with two columns: a DateTime vector and a fraction seconds remainder
+A vector of Date objects
 }
 \description{
 Convert the date/time stamp in the Polar H10 data to two columns: date/time and fractional seconds
@@ -20,5 +20,5 @@ Convert the date/time stamp in the Polar H10 data to two columns: date/time and 
 \examples{
 data(h10)
 ts <- convert_timestamp(h10[,1])
-h10 <- cbind(h10, ts)
+h10 <- cbind(h10, datetime=ts)
 }
