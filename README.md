@@ -51,9 +51,9 @@ Plot the data, and add vertical lines at the peaks
     plot(h10$time_sec, h10$ecg, type="l")
     abline(v=h10$time_sec[peaks], lty=2, col="red")
 
-Use `get_peak_stats()` to calculate some statistics about each peak.
+Use `calc_peak_stats()` to calculate some statistics about each peak.
 
-    peak_stats <- get_peak_stats(peaks, h10$ecg)
+    peak_stats <- calc_peak_stats(peaks, h10$ecg)
 
 The statistics `pmin` and `leftRR` seem particularly good for
 identifying the PVCs.
