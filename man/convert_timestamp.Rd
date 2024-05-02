@@ -7,7 +7,9 @@
 convert_timestamp(timestamp, tz = Sys.timezone())
 }
 \arguments{
-\item{timestamp}{A vector of "epoch"-based integers as returned in the Polar H10 data}
+\item{timestamp}{A vector of "epoch"-based integers as returned in the Polar H10 data.
+Alternatively, a vector of character strings in format like "2024-05-02 08:30:00"
+or just "2024-05-02 08:30"}
 
 \item{tz}{Timezone}
 }
