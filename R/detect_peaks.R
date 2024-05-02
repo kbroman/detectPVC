@@ -16,7 +16,13 @@
 #'
 #' @param adjust If TRUE, adjust the results to hit the nearby local maxima
 #'
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
+#'
 #' @importFrom rsleep detect_rpeaks
+#' @importFrom parallel detectCores stopCluster makeCluster parLapply mclapply
 #'
 #' @seealso [adjust_peaks()]
 #'
@@ -28,21 +34,22 @@
 #' peaks <- detect_peaks(h10$ecg)
 
 detect_peaks <-
-    function(signal, window=80000, pad=15000, sRate=1e9/7682304,
-             ..., return_index=TRUE, adjust=TRUE)
+    function(signal, window=80000, pad=window/4, sRate=1e9/7682304,
+             ..., return_index=TRUE, adjust=TRUE, cores=1)
 {
     # internal function to create non-overlapping windows with padding on each side
     window_info <- create_windows(length(signal), window=window, pad=pad)
 
-    result <- NULL
-    for(i in seq_len(nrow(window_info))) {
-        this_result <- rsleep::detect_rpeaks(signal[window_info$pre[i]:window_info$post[i]], sRate=sRate, ..., return_index=TRUE)
+    cores <- setup_cluster(cores)
 
-        this_result <- this_result + window_info$pre[i]-1
-        this_result <- this_result[this_result >= window_info$start[i] & window_info$end[i]]
+    by_group_func <- function(i) {
+        result <- rsleep::detect_rpeaks(signal[window_info$pre[i]:window_info$post[i]], sRate=sRate, ..., return_index=TRUE)
 
-        result <- c(result, this_result)
+        result <- result + window_info$pre[i]-1
+        result[result >= window_info$start[i] & window_info$end[i]]
     }
+
+    result <- unlist( cluster_lapply(cores, seq_len(nrow(window_info)), by_group_func) )
 
     result <- sort(unique(result)) # this is the result if return_index = TRUE
 

@@ -27,3 +27,16 @@ test_that("simple test of detect_peaks", {
                  detect_peaks(h10$ecg, return_index=FALSE))
 
 })
+
+
+test_that("detect_peaks works with multiple cores", {
+
+    skip_if(isnt_karl(), "this test only run locally")
+
+    expect_equal(detect_peaks(h10$ecg),
+                 detect_peaks(h10$ecg, window=1000))
+
+    expect_equal(detect_peaks(h10$ecg),
+                 detect_peaks(h10$ecg, window=1000, cores=4))
+
+})

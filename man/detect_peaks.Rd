@@ -7,11 +7,12 @@
 detect_peaks(
   signal,
   window = 80000,
-  pad = 15000,
+  pad = window/4,
   sRate = 1000000000/7682304,
   ...,
   return_index = TRUE,
-  adjust = TRUE
+  adjust = TRUE,
+  cores = 1
 )
 }
 \arguments{
@@ -28,6 +29,11 @@ detect_peaks(
 \item{return_index}{If TRUE, the index for each R peak is returned instead of the timing}
 
 \item{adjust}{If TRUE, adjust the results to hit the nearby local maxima}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \description{
 Detect R peaks in a raw ECG signal, using \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}} but using a sliding window.

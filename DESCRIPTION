@@ -14,7 +14,8 @@ Imports:
     lubridate,
     stringr,
     broman,
-    graphics
+    graphics,
+    parallel
 Suggests:
     testthat,
     devtools,
