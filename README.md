@@ -57,13 +57,13 @@ Use `detect_peaks()` to detect R peaks in the ECG trace.
 peaks <- detect_peaks(h10$ecg)
 ```
 
-Plot the data, and add points at the peaks. The function
+Plot the data, and add points above the peaks. The function
 `plot_ecg()` is a base-graphics-based plotting function to mimic a
 traditional ECG trace.
 
 ```{r}
 plot_ecg(h10$datetime, h10$ecg)
-points(h10$datetime[peaks], h10$ecg[peaks], pch=16, col="slateblue")
+points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col="slateblue")
 ```
 
 Use `calc_peak_stats()` to calculate some statistics about each peak.
@@ -86,8 +86,7 @@ dots.
 ```{r}
 plot_ecg(h10$datetime, h10$ecg)
 pvc <- (peak_stats$pmin > -0.45)
-points(h10$datetime[peaks[pvc]], peak_stats$pmax[pvc], pch=16, col="violetred")
-points(h10$datetime[peaks[!pvc]], peak_stats$pmax[!pvc], pch=16, col="green3")
+points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col=c("green3", "violetred")[pvc+1])
 ```
 
 In this 40 second window, there are 5 PVCs in 40 total beats.
