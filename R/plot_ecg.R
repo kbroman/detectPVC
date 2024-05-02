@@ -21,7 +21,7 @@
 #'
 #' @importFrom broman grayplot
 #' @importFrom graphics axis
-#' @importFrom lubridate hour minute second
+#' @importFrom lubridate second
 #'
 #' @export
 #'
@@ -63,7 +63,7 @@ plot_ecg <-
 
         # second axis with just minutes when it changes
         if(!is.numeric(times)) {
-            xgrid_lab2 <- paste0(lubridate::hour(xgrid_times), ":", lubridate::minute(xgrid_times))
+            xgrid_lab2 <- format(xgrid_times, format="%H:%M")
             xgrid_lab2[seq_along(xgrid_lab2) != 2 & xgrid_lab != "0"] <- ""
         }
 
