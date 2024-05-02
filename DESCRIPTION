@@ -12,7 +12,9 @@ Depends:
 Imports:
     rsleep,
     lubridate,
-    stringr
+    stringr,
+    broman,
+    graphics
 Suggests:
     testthat,
     devtools,
