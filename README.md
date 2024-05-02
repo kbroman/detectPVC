@@ -43,24 +43,27 @@ library(detectPVC)
 data(h10)
 ```
 
-We can add a column with the time in seconds from the first
-measurement.
+Convert the included times (which are time stamps from a Polar H10, in
+1e-9 seconds) to a standard date-time values.
 
 ```{r}
-h10$time_sec <- (h10$time - h10$time[1])/1e9
+h10$datetime <- convert_timestamp(h10$time)
 ```
 
-We use `detect_peaks()` to detect R peaks in the ECG trace.
+
+Use `detect_peaks()` to detect R peaks in the ECG trace.
 
 ```{r}
 peaks <- detect_peaks(h10$ecg)
 ```
 
-Plot the data, and add vertical lines at the peaks
+Plot the data, and add points at the peaks. The function
+`plot_ecg()` is a base-graphics-based plotting function to mimic a
+traditional ECG trace.
 
 ```{r}
-plot(h10$time_sec, h10$ecg, type="l")
-abline(v=h10$time_sec[peaks], lty=2, col="red")
+plot_ecg(h10$datetime, h10$ecg)
+points(h10$datetime[peaks], h10$ecg[peaks], pch=16, col="slateblue")
 ```
 
 Use `calc_peak_stats()` to calculate some statistics about each peak.
@@ -73,17 +76,18 @@ The statistics `pmin` and `leftRR` seem particularly good for
 identifying the PVCs.
 
 ```{r}
-plot(peak_stats$pmin, peak_stats$leftRR)
+par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
+plot(peak_stats$pmin, peak_stats$leftRR, xlab="peak min", ylab="left RR")
 ```
 
-We can then label the 5 PVCs with pink dots, and the others with green
+Label the inferred PVCs with pink dots, and the others with green
 dots.
 
 ```{r}
-plot(h10$time_sec, h10$ecg, type="l")
+plot_ecg(h10$datetime, h10$ecg)
 pvc <- (peak_stats$pmin > -0.45)
-points(h10$time_sec[peaks[pvc]], peak_stats$pmax[pvc], pch=16, col="violetred")
-points(h10$time_sec[peaks[!pvc]], peak_stats$pmax[!pvc], pch=16, col="green3")
+points(h10$datetime[peaks[pvc]], peak_stats$pmax[pvc], pch=16, col="violetred")
+points(h10$datetime[peaks[!pvc]], peak_stats$pmax[!pvc], pch=16, col="green3")
 ```
 
 In this 40 second window, there are 5 PVCs in 40 total beats.
