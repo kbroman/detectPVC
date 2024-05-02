@@ -13,6 +13,6 @@ test_that("simple tests of get_time_interval", {
     expect_equal(time_int1, time_int2)
     expect_equal(time_int1, time_int3)
 
-    expect_equal( which(time_int1), 3398:3917 )
+    expect_equal( time_int1, 3398:3917 )
 
 })

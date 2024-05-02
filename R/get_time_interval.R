@@ -48,5 +48,5 @@ get_time_interval <-
         start <- end - length
     }
 
-    times %within% lubridate::interval(start, end)
+    which( times %within% lubridate::interval(start, end) )
 }
