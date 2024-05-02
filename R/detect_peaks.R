@@ -6,6 +6,8 @@
 #'
 #' @param window Integer indicating the number of values to consider at one time
 #'
+#' @param pad Integer indicating the number of values to consider on each side, surrounding the window
+#'
 #' @param sRate ECG signal rate
 #'
 #' @param ... Passed to [rsleep::detect_rpeaks()]
@@ -26,19 +28,18 @@
 #' peaks <- detect_peaks(h10$ecg)
 
 detect_peaks <-
-    function(signal, window=2.5e5, sRate=1e9/7682304,
+    function(signal, window=80000, pad=15000, sRate=1e9/7682304,
              ..., return_index=TRUE, adjust=TRUE)
 {
-    starts <- seq(1, length(signal), by=window/2)
+    # internal function to create non-overlapping windows with padding on each side
+    window_info <- create_windows(length(signal), window=window, pad=pad)
 
     result <- NULL
-    for(i in seq_along(starts)) {
-        this_window <- starts[i] + 1:window - 1
-        this_window <- this_window[this_window <= length(signal)]
+    for(i in seq_len(nrow(window_info))) {
+        this_result <- rsleep::detect_rpeaks(signal[window_info$pre[i]:window_info$post[i]], sRate=sRate, ..., return_index=TRUE)
 
-        this_result <- rsleep::detect_rpeaks(signal[this_window], sRate=sRate, ..., return_index=TRUE)
-
-        this_result <- this_result + starts[i]-1
+        this_result <- this_result + window_info$pre[i]-1
+        this_result <- this_result[this_result >= window_info$start[i] & window_info$end[i]]
 
         result <- c(result, this_result)
     }

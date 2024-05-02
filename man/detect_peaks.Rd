@@ -6,7 +6,8 @@
 \usage{
 detect_peaks(
   signal,
-  window = 250000,
+  window = 80000,
+  pad = 15000,
   sRate = 1000000000/7682304,
   ...,
   return_index = TRUE,
@@ -17,6 +18,8 @@ detect_peaks(
 \item{signal}{Numerical vector of ECG signal}
 
 \item{window}{Integer indicating the number of values to consider at one time}
+
+\item{pad}{Integer indicating the number of values to consider on each side, surrounding the window}
 
 \item{sRate}{ECG signal rate}
 
