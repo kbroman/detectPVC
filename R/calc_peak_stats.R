@@ -25,11 +25,22 @@ calc_peak_stats <-
     function(peaks, signal, window=10, qtmax=60)
 {
     diff_peaks <- diff(peaks)
+    max_index <- length(signal)
 
     result <- data.frame(
-        pmax=vapply(peaks, function(a) max(signal[(a-window):(a+window)], na.rm=TRUE), 1.0),
-        pmin=vapply(peaks, function(a) min(signal[(a-window):(a+window)], na.rm=TRUE), 1.0),
-        Tmax=vapply(peaks, function(a) max(signal[(a+window):(a+qtmax)], na.rm=TRUE), 1.0),
+        pmax=vapply(peaks, function(a) {
+            v <- (a-window):(a+window)
+            v <- v[v >= 1 & v <= max_index]
+            max(signal[v], na.rm=TRUE)}, 1.0),
+        pmin=vapply(peaks, function(a) {
+            v <- (a-window):(a+window)
+            v <- v[v >= 1 & v <= max_index]
+            min(signal[v], na.rm=TRUE)}, 1.0),
+        Tmax=vapply(peaks, function(a) {
+            v <- (a+window):(a+qtmax)
+            v <- v[v >= 1 & v <= max_index]
+            if(length(v)==0) return(NA)
+            max(signal[v], na.rm=TRUE)}, 1.0),
         leftRR=c(NA, diff_peaks),
         rightRR=c(diff_peaks, NA)
     )

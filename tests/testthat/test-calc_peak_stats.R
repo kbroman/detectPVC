@@ -19,4 +19,13 @@ test_that("simple test of calc_peak_stats", {
 
     expect_equal(peakstats, expected)
 
+
+    # slightly different results if you truncate ecg at 320
+    ecg <- ecg[1:320]
+    expected[3,2] <- -0.147
+    expected[3,3] <- NA
+    expected[3,4] <- expected[2,5] <- 68
+    expect_equal(peaks, detect_peaks(ecg))
+    expect_equal(calc_peak_stats(peaks, ecg), expected)
+
 })
