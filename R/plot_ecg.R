@@ -52,7 +52,7 @@ plot_ecg <-
                  hlines.lty=NULL, hlines.minor.lty=NULL,
                  ylim=c(-2, 2), xaxs="i", yaxs="i", type="l",
                  mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL,
-                 bgcolor=bgcolor, las=1, lwd=2, xlab="Time (sec)", ylab="ECG signal",
+                 bgcolor=bgcolor, las=1, xlab="Time (sec)", ylab="ECG signal",
                  ...)
     {
         ntimes <- as.numeric(times)
@@ -93,7 +93,7 @@ plot_ecg <-
                          vlines=vlines, hlines=hlines,
                          vlines.col=vlines.col, vlines.lwd=vlines.lwd, vlines.lty=vlines.lty,
                          hlines.col=hlines.col, hlines.lwd=hlines.lwd, hlines.lty=hlines.lty,
-                         xaxs=xaxs, yaxs=yaxs, bgcolor=bgcolor, ylim=ylim, lwd=lwd, ...)
+                         xaxs=xaxs, yaxs=yaxs, bgcolor=bgcolor, ylim=ylim, ...)
         axis(at=major_xgrid, labels=xgrid_lab, side=1, mgp=mgp.x, tick=FALSE, las=las)
         if(!is.numeric(times)) { # add times
             axis(at=major_xgrid, labels=xgrid_lab2, side=3, mgp=mgp.x, tick=FALSE, las=las)
