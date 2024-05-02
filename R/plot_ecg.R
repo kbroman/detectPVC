@@ -17,7 +17,7 @@
 #'
 #' @param ... Passed to [broman::grayplot()]
 #'
-#' @param return None.
+#' @return None.
 #'
 #' @importFrom broman grayplot
 #' @importFrom graphics axis

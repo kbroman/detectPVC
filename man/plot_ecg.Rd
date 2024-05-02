@@ -29,8 +29,9 @@ then fill in with times assuming Polar H10 signal rate.}
 \item{tz}{Timezone (in converting times)}
 
 \item{...}{Passed to \code{\link[broman:grayplot]{broman::grayplot()}}}
-
-\item{return}{None.}
+}
+\value{
+None.
 }
 \description{
 Plot of ECG signal approximately matching traditional ECG graphs
