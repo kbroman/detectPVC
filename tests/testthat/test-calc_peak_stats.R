@@ -14,7 +14,8 @@ test_that("simple test of calc_peak_stats", {
                                Tmax = c(0.178, 0.168, -0.002),
                                leftRR = c(NA, 131, 68),
                                rightRR = c(131, 68, NA),
-                               RRratio = c(NA, 1.92647058823529, NA)),
+                               RRratio = c(NA, 1.92647058823529, NA),
+                               RSdist = c(5, 4, 9)),
                           row.names = c("121", "252", "320"), class = "data.frame")
 
     expect_equal(peakstats, expected)
@@ -25,6 +26,7 @@ test_that("simple test of calc_peak_stats", {
     expected[3,2] <- -0.147
     expected[3,3] <- NA
     expected[3,4] <- expected[2,5] <- 68
+    expected[3,7] <- 1
     expect_equal(peaks, detect_peaks(ecg))
     expect_equal(calc_peak_stats(peaks, ecg), expected)
 

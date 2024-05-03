@@ -4,7 +4,7 @@
 \alias{calc_peak_stats}
 \title{Calculate summary statistics for each R peak}
 \usage{
-calc_peak_stats(peaks, signal, window = 10, qtmax = 60)
+calc_peak_stats(peaks, signal, window = 10, qtmax = 60, rsmax = 20)
 }
 \arguments{
 \item{peaks}{Location of R peaks as numeric indexes (from \code{\link[=detect_peaks]{detect_peaks()}} with \code{return_index=TRUE})}
@@ -14,11 +14,14 @@ calc_peak_stats(peaks, signal, window = 10, qtmax = 60)
 \item{window}{Tight window around each peak to look for local max and min}
 
 \item{qtmax}{Maximum width of QT interval to consider}
+
+\item{rsmax}{Maximum width of RS interval to consider}
 }
 \value{
 A data.frame with local max and min of ECG around peak,
 height of T (local max before the next peak), RR intervals
-to left and right of this R peak, and the ratio \code{leftRR}/\code{rightRR}.
+to left and right of this R peak, the ratio \code{leftRR}/\code{rightRR},
+and the distance from the R peak to the S trough.
 }
 \description{
 Calculate summary statistics for each R peak from ECG data, to help characterize which are normal and which are PVCs

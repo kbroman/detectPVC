@@ -10,9 +10,12 @@
 #'
 #' @param qtmax Maximum width of QT interval to consider
 #'
+#' @param rsmax Maximum width of RS interval to consider
+#'
 #' @return A data.frame with local max and min of ECG around peak,
 #'     height of T (local max before the next peak), RR intervals
-#'     to left and right of this R peak, and the ratio `leftRR`/`rightRR`.
+#'     to left and right of this R peak, the ratio `leftRR`/`rightRR`,
+#'     and the distance from the R peak to the S trough.
 #'
 #' @export
 #'
@@ -22,7 +25,7 @@
 #' peakstats <- calc_peak_stats(peaks, h10$ecg)
 
 calc_peak_stats <-
-    function(peaks, signal, window=10, qtmax=60)
+    function(peaks, signal, window=10, qtmax=60, rsmax=20)
 {
     diff_peaks <- diff(peaks)
     max_index <- length(signal)
@@ -42,7 +45,12 @@ calc_peak_stats <-
             if(length(v)==0) return(NA)
             max(signal[v], na.rm=TRUE)}, 1.0),
         leftRR=c(NA, diff_peaks),
-        rightRR=c(diff_peaks, NA)
+        rightRR=c(diff_peaks, NA),
+        RRratio=rep(NA, length(peaks)),
+        RSdist=vapply(peaks, function(a) {
+            v <- a:(a+rsmax)
+            v <- v[v >= 1 & v <= max_index]
+            which.min(signal[v])}, 1)
     )
 
     result$RRratio <- result$leftRR/result$rightRR
