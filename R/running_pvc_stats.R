@@ -9,6 +9,9 @@
 #' @param pvc Vector of boolean indicators of whether the peaks are PVC or not.
 #' Should be the same length as `peaks`.
 #'
+#' @param omit_segments Segments to be ignored in analysis, as a data frame with
+#' two columns: the start and end index for each interval to be ignored
+#'
 #' @param window Window in seconds to calculate the running statistics
 #'
 #' @param at Times at which to calculate the running statistics.
@@ -41,7 +44,8 @@
 #' pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, n_at=4)
 
 running_pvc_stats <-
-    function(times, peaks, pvc, window=240, at=NULL, n_at=240, cores=1, tz=Sys.timezone())
+    function(times, peaks, pvc, omit_segments=NULL, window=240, at=NULL, n_at=240,
+             cores=1, tz=Sys.timezone())
 {
     stopifnot(all(peaks >= 1 & peaks <= length(times)))
     stopifnot(length(peaks) == length(pvc))
@@ -53,23 +57,76 @@ running_pvc_stats <-
         at <- seq(times[1], max(times), length=n_at)
     }
 
-    batch_func <-
-        function(time)
+    calc_stats <-
+        function(v)
     {
-        v <- get_time_interval(times, time-window/2, time+window/2)
         center <- median(times[v])
         length <- diff(range(as.numeric(times[v])))
         beat_sum <- sum(peaks %in% v)
         pvc_sum <- sum(pvc[peaks %in% v])
 
-        return(data.frame(time=center,
-                          pvc_percent=pvc_sum/beat_sum*100,
-                          hr=beat_sum/length*60,
-                          window_length=length))
+        data.frame(time=center,
+                   pvc_percent=pvc_sum/beat_sum*100,
+                   hr=beat_sum/length*60,
+                   window_length=length)
+    }
+
+    batch_func <-
+        function(time)
+    {
+        v <- get_time_interval(times, time-window/2, time+window/2)
+
+        if(!is.null(omit_segments)) {
+            omit <- values_in_segments(v, omit_segments)
+
+            if(any(omit)) { # look to see if we have a set of intervals
+                v <- v[!omit]
+                if(length(v)==0) return(NULL)
+                dv <- diff(v)
+                if(all(dv)==1) { # just one interval so return results
+                    return(calc_stats(v))
+                }
+
+                # split into a set of intervals
+                vspl <- split(v, cut(v, c(-Inf, which(dv > 1)+0.5, Inf)))
+                vspl <- vspl[vapply(vspl, function(vv) diff(range(vv))>1, TRUE)]
+                if(length(vspl)==0) return(NULL)
+                else if(length(vspl)==1) return(calc_stats(vspl[[1]]))
+
+                results <- do.call("rbind", lapply(vspl, calc_stats))
+
+                # combine the results of the set of intervals
+                center <- median(times[v])
+                lengths <- results$window_lengths
+                beat_sums <- results$hr*lengths/60
+                pvc_sums <- results$pvc_percent*beat_sums/100
+
+                return(data.frame(time=median(times[v]),
+                                  pvc_percent=sum(pvc_sums)/sum(beat_sums),
+                                  hr=sum(beat_sums)/sum(lengths)*60,
+                                  window_length=sum(lengths)))
+
+            }
+        }
+
+        calc_stats(v)
     }
 
     result <- cluster_lapply(cores, at, batch_func)
     result <- do.call("rbind", result)
 
     result
+}
+
+
+values_in_segments <-
+    function(v, segments)
+{
+
+    m <- lapply(seq_len(nrow(segments)), function(r)
+        v >= segments[r,1] & v <= segments[r,2])
+
+    m <- matrix(unlist(m), byrow=TRUE, nrow=length(m))
+
+    apply(m, 2, any)
 }

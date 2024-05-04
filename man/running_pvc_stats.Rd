@@ -8,6 +8,7 @@ running_pvc_stats(
   times,
   peaks,
   pvc,
+  omit_segments = NULL,
   window = 240,
   at = NULL,
   n_at = 240,
@@ -22,6 +23,9 @@ running_pvc_stats(
 
 \item{pvc}{Vector of boolean indicators of whether the peaks are PVC or not.
 Should be the same length as \code{peaks}.}
+
+\item{omit_segments}{Segments to be ignored in analysis, as a data frame with
+two columns: the start and end index for each interval to be ignored}
 
 \item{window}{Window in seconds to calculate the running statistics}
 
