@@ -14,6 +14,8 @@
 #'
 #' @param min_gap Minimum gap between bad segments (otherwise merged)
 #'
+#' @param pad Pad the bad segments by this many values on each end (in index values)
+#'
 #' @param tz Timezone used by [convert_timestamp()]
 #'
 #' @return Data frame with two columns: the start and end index for
@@ -31,8 +33,10 @@
 
 find_bad_segments <-
     function(time, signal, absval_thresh=2, runmean_thresh=0.7,
-             window=0.2, min_gap=2000, tz=Sys.timezone())
+             window=0.2, min_gap=2000, pad=400, tz=Sys.timezone())
 {
+    stopifnot(length(time) == length(signal))
+
     time <- convert_timestamp(time, tz=tz)
 
     running_mean <- broman::runningmean(time, abs(signal), time, window=0.2)
@@ -52,6 +56,12 @@ find_bad_segments <-
     badsegs[nrow(badsegs),2] <- max(w)
 
     colnames(badsegs) <- c("start", "end")
+
+    # pad the bad segments on each end
+    badsegs[,1] <- badsegs[,1] - pad
+    badsegs[,2] <- badsegs[,2] + pad
+    badsegs[badsegs < 1] <- 1
+    badsegs[badsegs > length(time)] <- length(time)
 
     as.data.frame(badsegs)
 }

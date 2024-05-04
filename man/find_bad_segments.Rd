@@ -11,6 +11,7 @@ find_bad_segments(
   runmean_thresh = 0.7,
   window = 0.2,
   min_gap = 2000,
+  pad = 400,
   tz = Sys.timezone()
 )
 }
@@ -26,6 +27,8 @@ find_bad_segments(
 \item{window}{Window for running mean (in seconds)}
 
 \item{min_gap}{Minimum gap between bad segments (otherwise merged)}
+
+\item{pad}{Pad the bad segments by this many values on each end (in index values)}
 
 \item{tz}{Timezone used by \code{\link[=convert_timestamp]{convert_timestamp()}}}
 }
