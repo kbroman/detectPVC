@@ -10,13 +10,14 @@ Authors@R: c(person("Karl W", "Broman", role=c("aut", "cre"),
 Depends:
     R (>= 3.5.0)
 Imports:
-    rsleep,
     lubridate,
     stringr,
     broman,
     graphics,
     parallel,
-    utils
+    utils,
+    stats,
+    signal
 Suggests:
     testthat,
     devtools,

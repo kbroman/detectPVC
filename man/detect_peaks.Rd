@@ -9,6 +9,7 @@ detect_peaks(
   window = 80000,
   pad = window/4,
   sRate = 1000000000/7682304,
+  peak_limit = 1.5,
   ...,
   return_index = TRUE,
   adjust = TRUE,
@@ -24,7 +25,10 @@ detect_peaks(
 
 \item{sRate}{ECG signal rate}
 
-\item{...}{Passed to \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}}}
+\item{peak_limit}{Limit factor on size of peaks relative to mean convolved signal.
+Larger values will ignore low-valued peaks.}
+
+\item{...}{Passed to a modified version of \code{rsleep::detect_rpeaks()}}
 
 \item{return_index}{If TRUE, the index for each R peak is returned instead of the timing}
 
@@ -36,7 +40,8 @@ Alternatively, this can be links to a set of cluster sockets, as
 produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \description{
-Detect R peaks in a raw ECG signal, using \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}} but using a sliding window.
+Detect R peaks in a raw ECG signal, using a modified version of
+\code{rsleep::detect_rpeaks()} but using a sliding window.
 }
 \examples{
 data(h10)

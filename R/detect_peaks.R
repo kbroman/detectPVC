@@ -1,6 +1,7 @@
 #' Detect R peaks in a raw ECG signal, using a sliding window
 #'
-#' Detect R peaks in a raw ECG signal, using [rsleep::detect_rpeaks()] but using a sliding window.
+#' Detect R peaks in a raw ECG signal, using a modified version of
+#' `rsleep::detect_rpeaks()` but using a sliding window.
 #'
 #' @param signal Numerical vector of ECG signal
 #'
@@ -10,7 +11,10 @@
 #'
 #' @param sRate ECG signal rate
 #'
-#' @param ... Passed to [rsleep::detect_rpeaks()]
+#' @param peak_limit Limit factor on size of peaks relative to mean convolved signal.
+#' Larger values will ignore low-valued peaks.
+#'
+#' @param ... Passed to a modified version of `rsleep::detect_rpeaks()`
 #'
 #' @param return_index If TRUE, the index for each R peak is returned instead of the timing
 #'
@@ -21,7 +25,8 @@
 #' Alternatively, this can be links to a set of cluster sockets, as
 #' produced by [parallel::makeCluster()].
 #'
-#' @importFrom rsleep detect_rpeaks
+#' @importFrom stats convolve
+#' @importFrom signal butter filtfilt
 #' @importFrom parallel detectCores stopCluster makeCluster parLapply mclapply
 #'
 #' @seealso [adjust_peaks()]
@@ -34,7 +39,7 @@
 #' peaks <- detect_peaks(h10$ecg)
 
 detect_peaks <-
-    function(signal, window=80000, pad=window/4, sRate=1e9/7682304,
+    function(signal, window=80000, pad=window/4, sRate=1e9/7682304, peak_limit=1.5,
              ..., return_index=TRUE, adjust=TRUE, cores=1)
 {
     # internal function to create non-overlapping windows with padding on each side
@@ -43,7 +48,7 @@ detect_peaks <-
     cores <- setup_cluster(cores)
 
     by_group_func <- function(i) {
-        result <- rsleep::detect_rpeaks(signal[window_info$pre[i]:window_info$post[i]], sRate=sRate, ..., return_index=TRUE)
+        result <- rsleep_detect_rpeaks(signal[window_info$pre[i]:window_info$post[i]], sRate=sRate, ..., limit_factor=peak_limit, return_index=TRUE)
 
         result <- result + window_info$pre[i]-1
         result[result >= window_info$start[i] & window_info$end[i]]
