@@ -11,8 +11,10 @@
 #'
 #' @param window Window in seconds to calculate the running statistics
 #'
-#' @param at Times at which to calculate the running statistics. If not provided,
-#' we use a 1 minute spacing across the range of `times`.
+#' @param at Times at which to calculate the running statistics.
+#'
+#' @param n_at If `at` is not provided, we use this number of
+#' equally-spaced values across the range of `times`.
 #'
 #' @param cores Number of CPU cores to use, for parallel calculations.
 #' (If `0`, use [parallel::detectCores()].)
@@ -36,12 +38,10 @@
 #' peak_stats <- calc_peak_stats(peaks, h10$ecg)
 #' pvc <- (peak_stats$RSdist > 6)
 #'
-#' h10$datetime <- convert_timestamp(h10$time)
-#' at <- seq(h10$datetime[1], max(h10$datetime), by=10)
-#' pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, at=at)
+#' pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, n_at=4)
 
 running_pvc_stats <-
-    function(times, peaks, pvc, window=240, at=NULL, cores=1, tz=Sys.timezone())
+    function(times, peaks, pvc, window=240, at=NULL, n_at=240, cores=1, tz=Sys.timezone())
 {
     stopifnot(all(peaks >= 1 & peaks <= length(times)))
     stopifnot(length(peaks) == length(pvc))
@@ -50,7 +50,7 @@ running_pvc_stats <-
     times <- convert_timestamp(times, tz=tz)
 
     if(is.null(at)) {
-        at <- seq(times[1], max(times), by=60)
+        at <- seq(times[1], max(times), length=n_at)
     }
 
     batch_func <-

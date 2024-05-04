@@ -10,6 +10,7 @@ running_pvc_stats(
   pvc,
   window = 240,
   at = NULL,
+  n_at = 240,
   cores = 1,
   tz = Sys.timezone()
 )
@@ -24,8 +25,10 @@ Should be the same length as \code{peaks}.}
 
 \item{window}{Window in seconds to calculate the running statistics}
 
-\item{at}{Times at which to calculate the running statistics. If not provided,
-we use a 1 minute spacing across the range of \code{times}.}
+\item{at}{Times at which to calculate the running statistics.}
+
+\item{n_at}{If \code{at} is not provided, we use this number of
+equally-spaced values across the range of \code{times}.}
 
 \item{cores}{Number of CPU cores to use, for parallel calculations.
 (If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
@@ -49,7 +52,5 @@ peaks <- detect_peaks(h10$ecg)
 peak_stats <- calc_peak_stats(peaks, h10$ecg)
 pvc <- (peak_stats$RSdist > 6)
 
-h10$datetime <- convert_timestamp(h10$time)
-at <- seq(h10$datetime[1], max(h10$datetime), by=10)
-pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, at=at)
+pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, n_at=4)
 }
