@@ -36,3 +36,10 @@ each identified bad segment.
 \description{
 Find particularly noisy regions in ECG signal, with large values far from 0
 }
+\examples{
+data(h10)
+empty_df <- find_bad_segments(h10$time, h10$ecg)
+
+h10$ecg[3896:3931] <- 2.5
+find_bad_segments(h10$time, h10$ecg)
+}

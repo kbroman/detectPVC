@@ -21,6 +21,13 @@
 #'
 #' @importFrom broman runningmean
 #' @export
+#'
+#' @examples
+#' data(h10)
+#' empty_df <- find_bad_segments(h10$time, h10$ecg)
+#'
+#' h10$ecg[3896:3931] <- 2.5
+#' find_bad_segments(h10$time, h10$ecg)
 
 find_bad_segments <-
     function(time, signal, absval_thresh=2, runmean_thresh=0.7,
@@ -31,6 +38,11 @@ find_bad_segments <-
     running_mean <- broman::runningmean(time, abs(signal), time, window=0.2)
 
     w <- which(abs(signal) > absval_thresh | running_mean > runmean_thresh)
+
+    if(length(w)==0) {
+        return(data.frame(start=numeric(0), end=numeric(0)))
+    }
+
     dw <- diff(w)
     br <- which(dw > min_gap)
 
