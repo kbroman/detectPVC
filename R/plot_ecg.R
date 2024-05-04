@@ -31,7 +31,7 @@
 #' plot_ecg(h10$time, h10$ecg)
 
 plot_ecg <-
-    function(times, signal, vlines.col="#c0a", vlines.minor.col="#f5c", bgcolor="gray98", tz=Sys.timezone(), ...)
+    function(times, signal, vlines.col="gray70", vlines.minor.col="gray80", bgcolor="gray98", tz=Sys.timezone(), ...)
 {
 
     if(missing(signal) || is.null(signal)) {

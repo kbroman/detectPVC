@@ -7,8 +7,8 @@
 plot_ecg(
   times,
   signal,
-  vlines.col = "#c0a",
-  vlines.minor.col = "#f5c",
+  vlines.col = "gray70",
+  vlines.minor.col = "gray80",
   bgcolor = "gray98",
   tz = Sys.timezone(),
   ...
