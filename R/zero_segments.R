@@ -5,7 +5,7 @@
 #' @param signal Numeric vector of ECG signal
 #'
 #' @param segments Data frame with two columns: the start and end index for
-#' each interval
+#' each interval that is to have signal replaced by 0
 #'
 #' @return The input `signal` vector, but with the specified intervals replaced with 0.
 #'

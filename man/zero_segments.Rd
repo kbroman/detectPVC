@@ -10,7 +10,7 @@ zero_segments(signal, segments)
 \item{signal}{Numeric vector of ECG signal}
 
 \item{segments}{Data frame with two columns: the start and end index for
-each interval}
+each interval that is to have signal replaced by 0}
 }
 \value{
 The input \code{signal} vector, but with the specified intervals replaced with 0.
