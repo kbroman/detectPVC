@@ -21,7 +21,7 @@
 #' If provided, should be the same length as `peaks` and will be used to color the points
 #' at the peaks.
 #'
-#' @param bad_segments Optional matrix indicating segments to highlight, as returned from
+#' @param hilit_segments Optional matrix indicating segments to highlight, as returned from
 #' [find_bad_segments()], with rows corresponding to intervals and two columns of
 #' numeric indexes of the start and end of each interval
 #'
@@ -30,7 +30,7 @@
 #'
 #' @param pch_peak Point type to plot at peaks.
 #'
-#' @param col_segments Color to highlight the bad segments
+#' @param col_segments Color to highlight the segments in `hilit_segments`
 #'
 #' @param tz Timezone (in converting times)
 #'
@@ -55,7 +55,7 @@
 
 plot_ecg_mult <-
     function(times, signal, start=NULL, length=30, n_panel=4,
-             peaks=NULL, pvc=NULL, bad_segments=NULL,
+             peaks=NULL, pvc=NULL, hilit_segments=NULL,
              col_peak=c("slateblue", "violetred"),
              pch_peak=16, col_segments="#c0d3", tz=Sys.timezone(), ...)
 {
@@ -90,13 +90,13 @@ plot_ecg_mult <-
         start <- start + length
         plot_ecg(times[v], signal[v], ...)
 
-        if(!is.null(bad_segments)) {
-            hilit <- segments_contain_values(v, bad_segments)
+        if(!is.null(hilit_segments)) {
+            hilit <- segments_contain_values(v, hilit_segments)
             if(any(hilit)) {
                 u <- par("usr")
                 for(i in which(hilit)) {
-                    rect(times[bad_segments[i,1]], u[3],
-                         times[bad_segments[i,2]], u[4],
+                    rect(times[hilit_segments[i,1]], u[3],
+                         times[hilit_segments[i,2]], u[4],
                          col=col_segments, border=col_segments)
                 }
                 lines(times[v], signal[v])
