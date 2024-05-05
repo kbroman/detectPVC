@@ -1,0 +1,84 @@
+#' Find PVC patterns
+#'
+#' In a sequence of ECG peaks classified as PVC or not, find patterns
+#' like bigeminy, trigeminy, couplets and triplets.
+#'
+#' @param times Vector of times (integers as from Polar H10, datetimes, or character strings)
+#'
+#' @param peaks Vector of peak indices as integers from 1 to `length(times)`
+#'
+#' @param pvc Vector of boolean indicators of whether the peaks are PVC or not.
+#' Should be the same length as `peaks`.
+#'
+#' @param omit_segments Segments to be ignored in analysis, as a data frame with
+#' two columns: the start and end index for each interval to be ignored
+#'
+#' @param pattern The character string with the regular expression to look for,
+#' with `N`=normal, `P`=PVC, so for example `"(NNP)+"` for trigeminy.
+#'
+#' @param tz Time zone for converting time stamps
+#'
+#' @return Data frame with start and end times + length of match (as number of peaks)
+#'
+#' @importFrom stringr str_extract_all str_locate_all
+#' @export
+#'
+#' @examples
+#' data(h10)
+#' peaks <- detect_peaks(h10$ecg)
+#' peak_stats <- calc_peak_stats(peaks, h10$ecg)
+#' pvc <- (peak_stats$RSdist > 6)
+#'
+#' find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
+
+find_pvc_pattern <-
+    function(times, peaks, pvc, bad_segments=NULL,
+             pattern, min_length=0, tz=Sys.timezone())
+{
+    times <- convert_timestamp(times, tz=tz)
+
+    stopifnot(all(peaks >= 1 & peaks <= length(times)))
+    stopifnot(length(pvc) == length(peaks))
+
+    # pvc to characters
+    pvc <- c("N", "P")[pvc+1]
+
+    # insert a fake peak in the middle of each bad segment
+    if(!is.null(bad_segments)) {
+        n_peaks <- length(peaks)
+        n_seg <- nrow(bad_segments)
+        peaks <- c(peaks, rep(0, n_seg))
+        pvc <- c(pvc, rep("B", n_seg)) # B for bad
+        if(!is.null(bad_segments)) {
+            for(i in seq_len(nrow(bad_segments))) {
+                peaks[n_peaks+i] <-  median(unlist(bad_segments[i,]))
+            }
+        }
+        # reorder peaks
+        o <- order(peaks)
+        peaks <- peaks[o]
+        pvc <- pvc[o]
+    }
+
+    str <- paste(pvc, collapse="")
+
+    # find all instances of pattern + their locations
+    match <- stringr::str_extract_all(str, "(NNP)+")[[1]]
+    loc <- stringr::str_locate_all(str, "(NNP)+")[[1]] # 2-col matrix with start and end
+
+    # omit shorter ones
+    keep <- (nchar(match) >= min_length)
+    match <- match[keep]
+    loc <- loc[keep,,drop=FALSE]
+
+    if(length(match)==0) {
+        return(data.frame(start=numeric(0),
+                          end=numeric(0),
+                          n_beats=numeric(0)))
+    }
+
+    # convert loc to times
+    data.frame(start=times[peaks[loc[,1]]],
+               end=times[peaks[loc[,2]]],
+               n_beats=nchar(match))
+}
