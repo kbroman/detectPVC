@@ -25,7 +25,7 @@
 #' @examples
 #' data(h10)
 #' peaks <- detect_peaks(h10$ecg)
-#' peakstats <- calc_peak_stats(peaks, h10$ecg)
+#' peak_stats <- calc_peak_stats(peaks, h10$ecg)
 
 calc_peak_stats <-
     function(peaks, signal, window=10, qtmax=60, rsmax=20,
@@ -81,5 +81,6 @@ calc_peak_stats <-
     result$RRratio <- result$leftRR/result$rightRR
 
     rownames(result) <- peaks
+
     result
 }

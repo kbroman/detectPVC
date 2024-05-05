@@ -39,5 +39,5 @@ Calculate summary statistics for each R peak from ECG data, to help characterize
 \examples{
 data(h10)
 peaks <- detect_peaks(h10$ecg)
-peakstats <- calc_peak_stats(peaks, h10$ecg)
+peak_stats <- calc_peak_stats(peaks, h10$ecg)
 }
