@@ -20,7 +20,7 @@ test_that("simple test of running_pvc_stats", {
                             60.0156600806509, 62.5414485424771),
                      window_length = c(14.9999730587006, 24.9973554611206,
                                        29.9921720027924, 24.9434580802917)),
-                     row.names = c(NA, -4L), class = "data.frame")
+                     row.names = c(NA, -4L), class = c("pvc_stats", "data.frame"))
 
     expect_equal(pvc_stats, expected)
 
