@@ -114,6 +114,7 @@ running_pvc_stats <-
 
     result <- cluster_lapply(cores, at, batch_func)
     result <- do.call("rbind", result)
+    class(result) <- c("pvc_stats", "data.frame")
 
     result
 }
