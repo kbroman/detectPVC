@@ -116,7 +116,5 @@ running_pvc_stats <-
     result <- do.call("rbind", result)
     class(result) <- c("pvc_stats", "data.frame")
 
-    attr(result, "pvc_percent") <- sum(pvc)/length(peaks)*100
-
     result
 }
