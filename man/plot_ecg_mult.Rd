@@ -12,8 +12,10 @@ plot_ecg_mult(
   n_panel = 4,
   peaks = NULL,
   pvc = NULL,
-  peak_colors = c("slateblue", "violetred"),
-  peak_pch = 16,
+  bad_segments = NULL,
+  col_peak = c("slateblue", "violetred"),
+  pch_peak = 16,
+  col_segments = "#c0d3",
   tz = Sys.timezone(),
   ...
 )
@@ -38,10 +40,16 @@ peak location}
 If provided, should be the same length as \code{peaks} and will be used to color the points
 at the peaks.}
 
-\item{peak_colors}{Vector of two colors to use to color the dots that indicate non-PVC
+\item{bad_segments}{Optional matrix indicating segments to highlight, as returned from
+\code{\link[=find_bad_segments]{find_bad_segments()}}, with rows corresponding to intervals and two columns of
+numeric indexes of the start and end of each interval}
+
+\item{col_peak}{Vector of two colors to use to color the dots that indicate non-PVC
 and PVC peaks, respectively}
 
-\item{peak_pch}{Point type to plot at peaks.}
+\item{pch_peak}{Point type to plot at peaks.}
+
+\item{col_segments}{Color to highlight the bad segments}
 
 \item{tz}{Timezone (in converting times)}
 

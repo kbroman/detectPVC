@@ -21,10 +21,16 @@
 #' If provided, should be the same length as `peaks` and will be used to color the points
 #' at the peaks.
 #'
-#' @param peak_colors Vector of two colors to use to color the dots that indicate non-PVC
+#' @param bad_segments Optional matrix indicating segments to highlight, as returned from
+#' [find_bad_segments()], with rows corresponding to intervals and two columns of
+#' numeric indexes of the start and end of each interval
+#'
+#' @param col_peak Vector of two colors to use to color the dots that indicate non-PVC
 #' and PVC peaks, respectively
 #'
-#' @param peak_pch Point type to plot at peaks.
+#' @param pch_peak Point type to plot at peaks.
+#'
+#' @param col_segments Color to highlight the bad segments
 #'
 #' @param tz Timezone (in converting times)
 #'
@@ -32,7 +38,7 @@
 #'
 #' @return None.
 #'
-#' @importFrom graphics par points
+#' @importFrom graphics par points lines rect
 #'
 #' @export
 #'
@@ -49,8 +55,9 @@
 
 plot_ecg_mult <-
     function(times, signal, start=NULL, length=30, n_panel=4,
-             peaks=NULL, pvc=NULL, peak_colors=c("slateblue", "violetred"),
-             peak_pch=16, tz=Sys.timezone(), ...)
+             peaks=NULL, pvc=NULL, bad_segments=NULL,
+             col_peak=c("slateblue", "violetred"),
+             pch_peak=16, col_segments="#c0d3", tz=Sys.timezone(), ...)
 {
     par(mfrow=c(n_panel, 1))
 
@@ -84,11 +91,25 @@ plot_ecg_mult <-
         start <- start + length
         plot_ecg(times[v], signal[v], ...)
 
+        if(!is.null(bad_segments)) {
+            hilit <- segments_contain_values(v, bad_segments)
+            if(any(hilit)) {
+                u <- par("usr")
+                for(i in which(hilit)) {
+                    rect(times[bad_segments[i,1]], u[3],
+                         times[bad_segments[i,2]], u[4],
+                         col=col_segments, border=col_segments)
+                }
+                lines(times[v], signal[v])
+            }
+        }
+
         if(!is.null(peaks)) {
             p <- peaks[peaks %in% v]
             ppvc <- pvc[peaks %in% v]
-            points(times[p], signal[p], pch=peak_pch, col=peak_colors[ppvc+1])
+            points(times[p], signal[p], pch=pch_peak, col=col_peak[ppvc+1])
         }
+
 
     }
 

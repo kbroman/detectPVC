@@ -117,16 +117,3 @@ running_pvc_stats <-
 
     result
 }
-
-
-values_in_segments <-
-    function(v, segments)
-{
-
-    m <- lapply(seq_len(nrow(segments)), function(r)
-        v >= segments[r,1] & v <= segments[r,2])
-
-    m <- matrix(unlist(m), byrow=TRUE, nrow=length(m))
-
-    apply(m, 2, any)
-}
