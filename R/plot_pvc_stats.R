@@ -32,7 +32,10 @@ plot.pvc_stats <-
         function(x, ..., xlab="Time", ylab1="Percent PVC",
                  ylab2="Heart rate (BPM)", type="l",
                  mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL,
-                 mar=c(3.1, 3.6, 1.6, 0.6))
+                 mar=c(3.1, 3.6, 1.6, 0.6), xaxs="i", yaxs="i",
+                 ylim1=c(0, max(x$pvc)*1.02),
+                 ylim2=c(range(x$hr))*c(0.98, 1.02),
+                 col="darkslateblue", lwd=2)
     {
         par(mar=mar)
         xax <- broman::time_axis(x$time)
@@ -41,10 +44,12 @@ plot.pvc_stats <-
         if(is.null(mgp.y)) mgp.y <- mgp
 
         par(mfrow=c(2,1))
-        grayplot(x$time, x$pvc, type=type, ..., xat=NA, ylab=ylab1, xlab=xlab)
+        grayplot(x$time, x$pvc, type=type, ..., xat=NA, ylab=ylab1, xlab=xlab,
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim1, col=col, lwd=lwd)
         axis(side=1, mgp=mgp.x, at=xax$x, label=xax$label, tick=FALSE)
 
-        grayplot(x$time, x$hr, type=type, ..., xat=NA, ylab=ylab2, xlab=xlab)
+        grayplot(x$time, x$hr, type=type, ..., xat=NA, ylab=ylab2, xlab=xlab,
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim2, col=col, lwd=lwd)
         axis(side=1, mgp=mgp.x, at=xax$x, label=xax$label, tick=FALSE)
     }
 
