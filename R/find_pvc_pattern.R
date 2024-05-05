@@ -37,7 +37,7 @@
 #' triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
 
 find_pvc_pattern <-
-    function(times, peaks, pvc, bad_segments=NULL,
+    function(times, peaks, pvc, omit_segments=NULL,
              pattern, min_length=0, tz=Sys.timezone())
 {
     times <- convert_timestamp(times, tz=tz)
@@ -49,14 +49,14 @@ find_pvc_pattern <-
     pvc <- c("N", "P")[pvc+1]
 
     # insert a fake peak in the middle of each bad segment
-    if(!is.null(bad_segments)) {
+    if(!is.null(omit_segments)) {
         n_peaks <- length(peaks)
-        n_seg <- nrow(bad_segments)
+        n_seg <- nrow(omit_segments)
         peaks <- c(peaks, rep(0, n_seg))
         pvc <- c(pvc, rep("B", n_seg)) # B for bad
-        if(!is.null(bad_segments)) {
-            for(i in seq_len(nrow(bad_segments))) {
-                peaks[n_peaks+i] <-  median(unlist(bad_segments[i,]))
+        if(!is.null(omit_segments)) {
+            for(i in seq_len(nrow(omit_segments))) {
+                peaks[n_peaks+i] <-  median(unlist(omit_segments[i,]))
             }
         }
         # reorder peaks

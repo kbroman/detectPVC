@@ -8,7 +8,7 @@ find_pvc_pattern(
   times,
   peaks,
   pvc,
-  bad_segments = NULL,
+  omit_segments = NULL,
   pattern,
   min_length = 0,
   tz = Sys.timezone()
@@ -22,15 +22,15 @@ find_pvc_pattern(
 \item{pvc}{Vector of boolean indicators of whether the peaks are PVC or not.
 Should be the same length as \code{peaks}.}
 
+\item{omit_segments}{Segments to be ignored in analysis, as a data frame with
+two columns: the start and end index for each interval to be ignored}
+
 \item{pattern}{The character string with the regular expression to look for,
 with \code{N}=normal, \code{P}=PVC, so for example \code{"(NNP)+"} for trigeminy.}
 
 \item{min_length}{Minimum length (as number of beats) for a pattern instance.}
 
 \item{tz}{Time zone for converting time stamps}
-
-\item{omit_segments}{Segments to be ignored in analysis, as a data frame with
-two columns: the start and end index for each interval to be ignored}
 }
 \value{
 Data frame with start and end times + length of match (as number of peaks)
