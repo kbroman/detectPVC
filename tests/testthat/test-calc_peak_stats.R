@@ -30,4 +30,23 @@ test_that("simple test of calc_peak_stats", {
     expect_equal(peaks, detect_peaks(ecg))
     expect_equal(calc_peak_stats(peaks, ecg), expected)
 
+    # deal with the case that there's an omitted segment
+    omit <- data.frame(start=280, end=300)
+
+    ecg <- h10$ecg[1:400]
+
+    peaks <- detect_peaks(ecg, omit_segments=omit)
+    peakstats <- calc_peak_stats(peaks, ecg, omit_segments=omit)
+
+    expected <- structure(list(pmax = c(0.396, 0.475, 0.9),
+                               pmin = c(-0.591, -0.62, -0.406),
+                               Tmax = c(0.178, 0.168, -0.002),
+                               leftRR = c(NA, 131, NA),
+                               rightRR = c(131, NA, NA),
+                               RRratio = as.numeric(c(NA, NA, NA)),
+                               RSdist = c(5, 4, 9)),
+                          row.names = c("121", "252", "320"), class = "data.frame")
+
+    expect_equal(peakstats, expected)
+
 })

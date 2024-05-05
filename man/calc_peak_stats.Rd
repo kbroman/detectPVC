@@ -4,7 +4,14 @@
 \alias{calc_peak_stats}
 \title{Calculate summary statistics for each R peak}
 \usage{
-calc_peak_stats(peaks, signal, window = 10, qtmax = 60, rsmax = 20)
+calc_peak_stats(
+  peaks,
+  signal,
+  window = 10,
+  qtmax = 60,
+  rsmax = 20,
+  omit_segments = NULL
+)
 }
 \arguments{
 \item{peaks}{Location of R peaks as numeric indexes (from \code{\link[=detect_peaks]{detect_peaks()}} with \code{return_index=TRUE})}
@@ -16,6 +23,9 @@ calc_peak_stats(peaks, signal, window = 10, qtmax = 60, rsmax = 20)
 \item{qtmax}{Maximum width of QT interval to consider}
 
 \item{rsmax}{Maximum width of RS interval to consider}
+
+\item{omit_segments}{Segments that were omitted: a data frame with two
+columns: the start and end index for each interval}
 }
 \value{
 A data.frame with local max and min of ECG around peak,
