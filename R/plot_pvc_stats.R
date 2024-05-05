@@ -56,11 +56,11 @@ plot.pvc_stats <-
         par(mfrow=c(2,1))
         grayplot(x$time, x$pvc, type=type, ..., xat=NA, ylab=ylab_pvc, xlab=xlab,
                  xaxs=xaxs, yaxs=yaxs, ylim=ylim_pvc, col=col, lwd=lwd)
-        axis(side=1, mgp=mgp.x, at=xax$x, label=xax$label, tick=FALSE)
+        axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
 
         grayplot(x$time, x$hr, type=type, ..., xat=NA, ylab=ylab_hr, xlab=xlab,
                  xaxs=xaxs, yaxs=yaxs, ylim=ylim_hr, col=col, lwd=lwd)
-        axis(side=1, mgp=mgp.x, at=xax$x, label=xax$label, tick=FALSE)
+        axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
     }
 
     internal_plot(x, ...)
