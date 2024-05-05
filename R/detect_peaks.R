@@ -14,6 +14,9 @@
 #' @param peak_limit Limit factor on size of peaks relative to mean convolved signal.
 #' Larger values will ignore low-valued peaks.
 #'
+#' @param omit_segments Segments to be omitted: a data frame with two
+#' columns: the start and end index for each interval
+#'
 #' @param ... Passed to a modified version of `rsleep::detect_rpeaks()`
 #'
 #' @param return_index If TRUE, the index for each R peak is returned instead of the timing
@@ -40,8 +43,12 @@
 
 detect_peaks <-
     function(signal, window=80000, pad=window/4, sRate=1e9/7682304, peak_limit=1.5,
-             ..., return_index=TRUE, adjust=TRUE, cores=1)
+             omit_segments=NULL, ..., return_index=TRUE, adjust=TRUE, cores=1)
 {
+    if(!is.null(omit_segments)) {
+        signal <- zero_segments(signal, omit_segments)
+    }
+
     # internal function to create non-overlapping windows with padding on each side
     window_info <- create_windows(length(signal), window=window, pad=pad)
 

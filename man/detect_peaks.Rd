@@ -10,6 +10,7 @@ detect_peaks(
   pad = window/4,
   sRate = 1000000000/7682304,
   peak_limit = 1.5,
+  omit_segments = NULL,
   ...,
   return_index = TRUE,
   adjust = TRUE,
@@ -27,6 +28,9 @@ detect_peaks(
 
 \item{peak_limit}{Limit factor on size of peaks relative to mean convolved signal.
 Larger values will ignore low-valued peaks.}
+
+\item{omit_segments}{Segments to be omitted: a data frame with two
+columns: the start and end index for each interval}
 
 \item{...}{Passed to a modified version of \code{rsleep::detect_rpeaks()}}
 
