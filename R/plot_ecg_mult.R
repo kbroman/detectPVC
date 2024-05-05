@@ -61,8 +61,8 @@ plot_ecg_mult <-
 {
     par(mfrow=c(n_panel, 1))
 
-    times <- convert_timestamp(times, tz=tz)
     if(is.null(start)) start <- times[1]
+    times <- convert_timestamp(times, tz=tz)
     start <- convert_timestamp(start, tz=tz)
     if(start < times[1]) start <- times[1]
 
@@ -83,6 +83,16 @@ plot_ecg_mult <-
         pvc <- rep(FALSE, length(peaks))
     }
 
+    # if hilit_segments has times, convert to indexes
+    if(!is.null(hilit_segments) && nrow(hilit_segments) > 0) {
+        print(hilit_segments)
+        if("POSIXct" %in% class(hilit_segments[,1]) ||
+           "POSIXt" %in% class(hilit_segments[,1])) {
+            hilit_segments <- t(vapply(seq_len(nrow(hilit_segments)), function(i)
+                range(get_time_interval(times, start=hilit_segments$start[i],
+                                        end=hilit_segments$end[i], tz=tz)), c(1,2)))
+        }
+    }
 
     for(i in seq_len(n_panel)) {
         v <- get_time_interval(times, start, length=length)
@@ -90,7 +100,8 @@ plot_ecg_mult <-
         start <- start + length
         plot_ecg(times[v], signal[v], ...)
 
-        if(!is.null(hilit_segments)) {
+        if(!is.null(hilit_segments) && nrow(hilit_segments)>0) {
+
             hilit <- segments_contain_values(v, hilit_segments)
             if(any(hilit)) {
                 u <- par("usr")
