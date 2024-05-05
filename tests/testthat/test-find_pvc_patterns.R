@@ -10,38 +10,26 @@ test_that("simple test of find_pvc_pattern", {
     trigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+",
                                   tz="America/Chicago")
 
-    expected <- structure(list(start = structure(c(1714447954.82288, 1714447973.13484,
-                                                   1714447980.6809, 1714447985.41447),
-                                                 class = c("POSIXct", "POSIXt"),
-                                                 tzone = "America/Chicago"),
-                               end = structure(c(1714447956.35207, 1714447974.58717,
-                                                 1714447982.18704, 1714447986.83607),
-                                               class = c("POSIXct","POSIXt"),
-                                               tzone = "America/Chicago"),
+    expected <- structure(list(start = c(121, 2504, 3486, 4102),
+                               end = c(320, 2693, 3682, 4287),
                                n_beats = c(3L, 3L, 3L, 3L)),
                           class = "data.frame", row.names = c(NA, -4L))
 
     expect_equal(trigeminy, expected)
 
     bigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NP)+",
-                                 min_length=4, tz="America/Chicago")
+                                 min_length=4)
 
-    expected <- structure(list(start = structure(1714447981.67987,
-                                                 class = c("POSIXct", "POSIXt"),
-                                                 tzone = "America/Chicago"),
-                               end = structure(1714447984.07738,
-                                               class = c("POSIXct", "POSIXt"),
-                                               tzone = "America/Chicago"),
+    expected <- structure(list(start = 3616,
+                               end = 3928,
                                n_beats = 4L),
                           class = "data.frame", row.names = c(NA, -1L))
 
     expect_equal(bigeminy, expected)
 
 
-    couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+",
-                                 tz="America/Chicago")
-    triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3,
-                                 tz="America/Chicago")
+    couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+")
+    triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
     empty <- structure(list(start = numeric(0),
                             end = numeric(0),
                             n_beats = numeric(0)),

@@ -17,7 +17,9 @@
 #' with `N`=normal, `P`=PVC, so for example `"(NNP)+"` for trigeminy.
 #'
 #' @param min_length Minimum length (as number of beats) for a pattern instance.
-
+#'
+#' @param return_index If TRUE, return indexes to times, not the actual times.
+#'
 #' @param tz Time zone for converting time stamps
 #'
 #' @return Data frame with start and end times + length of match (as number of peaks)
@@ -38,7 +40,8 @@
 
 find_pvc_pattern <-
     function(times, peaks, pvc, omit_segments=NULL,
-             pattern, min_length=0, tz=Sys.timezone())
+             pattern, min_length=0, return_index=TRUE,
+             tz=Sys.timezone())
 {
     times <- convert_timestamp(times, tz=tz)
 
@@ -83,7 +86,14 @@ find_pvc_pattern <-
     }
 
     # convert loc to times
-    data.frame(start=times[peaks[loc[,1]]],
-               end=times[peaks[loc[,2]]],
-               n_beats=nchar(match))
+    result <- data.frame(start=peaks[loc[,1]],
+                         end=peaks[loc[,2]],
+                         n_beats=nchar(match))
+
+    if(!return_index) {
+        result$start <- times[result$start]
+        result$end <- times[result$end]
+    }
+
+    result
 }
