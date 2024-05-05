@@ -62,9 +62,8 @@ plot_ecg_mult <-
     par(mfrow=c(n_panel, 1))
 
     times <- convert_timestamp(times, tz=tz)
-    start <- convert_timestamp(start, tz=tz)
-
     if(is.null(start)) start <- times[1]
+    start <- convert_timestamp(start, tz=tz)
     if(start < times[1]) start <- times[1]
 
     stopifnot(length(times) == length(signal))
