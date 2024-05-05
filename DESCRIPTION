@@ -12,7 +12,7 @@ Depends:
 Imports:
     lubridate,
     stringr,
-    broman,
+    broman (>= 0.82),
     graphics,
     parallel,
     utils,
