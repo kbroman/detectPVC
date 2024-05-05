@@ -4,18 +4,36 @@
 \alias{plot.pvc_stats}
 \title{Plot running PVC statistics}
 \usage{
-\method{plot}{pvc_stats}(x, ...)
+\method{plot}{pvc_stats}(
+  x,
+  ylab_pvc = "Percent PVC",
+  ylab_hr = "Heart rate (BPM)",
+  ylim_pvc = c(0, max(x$pvc) * 1.02),
+  ylim_hr = c(range(x$hr)) * c(0.98, 1.02),
+  ...
+)
 }
 \arguments{
-\item{...}{Passed to \code{\link[broman:grayplot]{broman::grayplot()}}}
+\item{x}{Data frame of running PVC stats from \code{\link[=running_pvc_stats]{running_pvc_stats()}}}
 
-\item{pvc_stats}{Data frame of running PVC stats from \code{\link[=running_pvc_stats]{running_pvc_stats()}}}
+\item{ylab_pvc}{Y-axis label for the plot of percent PVC}
+
+\item{ylab_hr}{Y-axis label for the plot of heart rate}
+
+\item{ylim_pvc}{Y-axis limits for the plot of percent PVC}
+
+\item{ylim_hr}{Y-axis limits for the plot of heart rate}
+
+\item{...}{Passed to \code{\link[broman:grayplot]{broman::grayplot()}}}
 }
 \value{
 None.
 }
 \description{
 Plot running PVC statistics from \code{\link[=running_pvc_stats]{running_pvc_stats()}}
+}
+\details{
+Makes a plot with two panels, of percent PVC vs time and heart rate vs time.
 }
 \examples{
 data(h10)
