@@ -25,6 +25,8 @@ Should be the same length as \code{peaks}.}
 \item{pattern}{The character string with the regular expression to look for,
 with \code{N}=normal, \code{P}=PVC, so for example \code{"(NNP)+"} for trigeminy.}
 
+\item{min_length}{Minimum length (as number of beats) for a pattern instance.}
+
 \item{tz}{Time zone for converting time stamps}
 
 \item{omit_segments}{Segments to be ignored in analysis, as a data frame with
@@ -43,5 +45,8 @@ peaks <- detect_peaks(h10$ecg)
 peak_stats <- calc_peak_stats(peaks, h10$ecg)
 pvc <- (peak_stats$RSdist > 6)
 
-find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
+trigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
+bigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NP)+", min_length=4)
+couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+")
+triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
 }

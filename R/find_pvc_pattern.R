@@ -16,6 +16,8 @@
 #' @param pattern The character string with the regular expression to look for,
 #' with `N`=normal, `P`=PVC, so for example `"(NNP)+"` for trigeminy.
 #'
+#' @param min_length Minimum length (as number of beats) for a pattern instance.
+
 #' @param tz Time zone for converting time stamps
 #'
 #' @return Data frame with start and end times + length of match (as number of peaks)
@@ -29,7 +31,10 @@
 #' peak_stats <- calc_peak_stats(peaks, h10$ecg)
 #' pvc <- (peak_stats$RSdist > 6)
 #'
-#' find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
+#' trigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
+#' bigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NP)+", min_length=4)
+#' couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+")
+#' triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
 
 find_pvc_pattern <-
     function(times, peaks, pvc, bad_segments=NULL,
@@ -63,8 +68,8 @@ find_pvc_pattern <-
     str <- paste(pvc, collapse="")
 
     # find all instances of pattern + their locations
-    match <- stringr::str_extract_all(str, "(NNP)+")[[1]]
-    loc <- stringr::str_locate_all(str, "(NNP)+")[[1]] # 2-col matrix with start and end
+    match <- stringr::str_extract_all(str, pattern)[[1]]
+    loc <- stringr::str_locate_all(str, pattern)[[1]] # 2-col matrix with start and end
 
     # omit shorter ones
     keep <- (nchar(match) >= min_length)
