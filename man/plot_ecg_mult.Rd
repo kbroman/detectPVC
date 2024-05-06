@@ -15,6 +15,8 @@ plot_ecg_mult(
   hilit_segments = NULL,
   col_peak = c("slateblue", "violetred"),
   pch_peak = 16,
+  cex_peak = 1,
+  bg_peak = c("slateblue", "violetred"),
   col_segments = "#c0d3",
   tz = Sys.timezone(),
   ...
@@ -47,7 +49,13 @@ numeric indexes of the start and end of each interval}
 \item{col_peak}{Vector of two colors to use to color the dots that indicate non-PVC
 and PVC peaks, respectively}
 
-\item{pch_peak}{Point type to plot at peaks.}
+\item{pch_peak}{Vector of one or two point types to plot at peaks.}
+
+\item{cex_peak}{Vector of one or two values to indicate size of points
+that indicate non-PVC and PVC peaks, respectively}
+
+\item{bg_peak}{Vector of one or two colors to use for background color for
+the dots that indicate non-PVC and PVC peaks, respectively.}
 
 \item{col_segments}{Color to highlight the segments in \code{hilit_segments}}
 

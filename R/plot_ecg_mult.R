@@ -28,7 +28,13 @@
 #' @param col_peak Vector of two colors to use to color the dots that indicate non-PVC
 #' and PVC peaks, respectively
 #'
-#' @param pch_peak Point type to plot at peaks.
+#' @param pch_peak Vector of one or two point types to plot at peaks.
+#'
+#' @param cex_peak Vector of one or two values to indicate size of points
+#' that indicate non-PVC and PVC peaks, respectively
+#'
+#' @param bg_peak Vector of one or two colors to use for background color for
+#'     the dots that indicate non-PVC and PVC peaks, respectively.
 #'
 #' @param col_segments Color to highlight the segments in `hilit_segments`
 #'
@@ -57,7 +63,8 @@ plot_ecg_mult <-
     function(times, signal, start=NULL, length=30, n_panel=4,
              peaks=NULL, pvc=NULL, hilit_segments=NULL,
              col_peak=c("slateblue", "violetred"),
-             pch_peak=16, col_segments="#c0d3", tz=Sys.timezone(), ...)
+             pch_peak=16, cex_peak=1, bg_peak=c("slateblue", "violetred"),
+             col_segments="#c0d3", tz=Sys.timezone(), ...)
 {
     par(mfrow=c(n_panel, 1))
 
@@ -65,6 +72,11 @@ plot_ecg_mult <-
     times <- convert_timestamp(times, tz=tz)
     start <- convert_timestamp(start, tz=tz)
     if(start < times[1]) start <- times[1]
+
+    if(length(col_peak)==1) col_peak <- rep(col_peak, 2)
+    if(length(pch_peak)==1) pch_peak <- rep(pch_peak, 2)
+    if(length(cex_peak)==1) cex_peak <- rep(cex_peak, 2)
+    if(length(bg_peak)==1)  bg_peak <- rep(bg_peak, 2)
 
     stopifnot(length(times) == length(signal))
 
@@ -85,7 +97,6 @@ plot_ecg_mult <-
 
     # if hilit_segments has times, convert to indexes
     if(!is.null(hilit_segments) && nrow(hilit_segments) > 0) {
-        print(hilit_segments)
         if("POSIXct" %in% class(hilit_segments[,1]) ||
            "POSIXt" %in% class(hilit_segments[,1])) {
             hilit_segments <- t(vapply(seq_len(nrow(hilit_segments)), function(i)
@@ -117,7 +128,8 @@ plot_ecg_mult <-
         if(!is.null(peaks)) {
             p <- peaks[peaks %in% v]
             ppvc <- pvc[peaks %in% v]
-            points(times[p], signal[p], pch=pch_peak, col=col_peak[ppvc+1])
+            points(times[p], signal[p], pch=pch_peak[ppvc+1], col=col_peak[ppvc+1],
+                   cex=cex_peak[ppvc+1], bg=bg_peak[ppvc+1])
         }
 
 
