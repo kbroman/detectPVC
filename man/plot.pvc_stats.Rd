@@ -8,8 +8,8 @@
   x,
   ylab_pvc = "Percent PVC",
   ylab_hr = "Heart rate (BPM)",
-  ylim_pvc = c(0, max(x$pvc) * 1.02),
-  ylim_hr = c(range(x$hr)) * c(0.98, 1.02),
+  ylim_pvc = c(0, max(x$pvc, na.rm = TRUE) * 1.02),
+  ylim_hr = c(range(x$hr, na.rm = TRUE)) * c(0.98, 1.02),
   ...
 )
 }
