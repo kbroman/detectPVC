@@ -66,6 +66,9 @@ plot_ecg_mult <-
              pch_peak=16, cex_peak=1, bg_peak=c("slateblue", "violetred"),
              col_segments="#c0d3", tz=Sys.timezone(), ...)
 {
+    old_mfrow <- par("mfrow")
+    on.exit(par(mfrow=old_mfrow))
+
     par(mfrow=c(n_panel, 1))
 
     if(is.null(start)) start <- times[1]
