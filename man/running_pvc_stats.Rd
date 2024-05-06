@@ -9,7 +9,7 @@ running_pvc_stats(
   peaks,
   pvc,
   omit_segments = NULL,
-  window = 240,
+  window = 480,
   at = NULL,
   n_at = 240,
   cores = 1,

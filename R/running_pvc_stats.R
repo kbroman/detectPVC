@@ -44,7 +44,7 @@
 #' pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, n_at=4)
 
 running_pvc_stats <-
-    function(times, peaks, pvc, omit_segments=NULL, window=240, at=NULL, n_at=240,
+    function(times, peaks, pvc, omit_segments=NULL, window=480, at=NULL, n_at=240,
              cores=1, tz=Sys.timezone())
 {
     stopifnot(all(peaks >= 1 & peaks <= length(times)))
