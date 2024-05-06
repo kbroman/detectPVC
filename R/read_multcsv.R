@@ -2,10 +2,10 @@
 #'
 #' Read multiple CSV files all with the same columns and rbind them together
 #'
+#' @param dir Subdirectory containing the files.
+#'
 #' @param files Optional character vector of file names. If not provided, we use
 #'     `list.files(dir)` to grab all CSV files in the directory `dir`.
-#'
-#' @param dir Optional subdirectory containing the files.
 #'
 #' @details At least one of `files` or `dir` must be provided.
 #' The files should all have the same set of columns.
@@ -16,7 +16,7 @@
 #' @export
 
 read_multcsv <-
-    function(files=NULL, dir=".")
+    function(dir=".", files=NULL)
 {
     if(is.null(files)) {
         if(is.null(dir)) stop("Provide at least one of files or dir")

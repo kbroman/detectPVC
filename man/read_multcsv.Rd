@@ -4,13 +4,13 @@
 \alias{read_multcsv}
 \title{Read multiple related CSV files}
 \usage{
-read_multcsv(files = NULL, dir = ".")
+read_multcsv(dir = ".", files = NULL)
 }
 \arguments{
+\item{dir}{Subdirectory containing the files.}
+
 \item{files}{Optional character vector of file names. If not provided, we use
 \code{list.files(dir)} to grab all CSV files in the directory \code{dir}.}
-
-\item{dir}{Optional subdirectory containing the files.}
 }
 \value{
 A data.frame with the contents of all files row-binded together.
