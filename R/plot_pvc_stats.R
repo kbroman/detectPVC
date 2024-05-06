@@ -48,18 +48,18 @@ plot.pvc_stats <-
                  col="darkslateblue", lwd=2)
     {
         par(mar=mar)
-        xax <- broman::time_axis(x$time)
+        xax <- broman::time_axis(x$time, 12)
 
         if(is.null(mgp.x)) mgp.x <- mgp
         if(is.null(mgp.y)) mgp.y <- mgp
 
         par(mfrow=c(2,1))
         grayplot(x$time, x$pvc, type=type, ..., xat=NA, ylab=ylab_pvc, xlab=xlab,
-                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_pvc, col=col, lwd=lwd)
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_pvc, col=col, lwd=lwd, vlines=xax$x)
         axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
 
         grayplot(x$time, x$hr, type=type, ..., xat=NA, ylab=ylab_hr, xlab=xlab,
-                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_hr, col=col, lwd=lwd)
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_hr, col=col, lwd=lwd, vlines=xax$x)
         axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
     }
 
