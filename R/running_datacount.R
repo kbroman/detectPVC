@@ -23,8 +23,8 @@
 #' n_pts <- running_datacount(h10$time)
 #'
 #' xax <- broman::time_axis(h10$datetime)
-#' grayplot(h10$datetime, n_pts, xat=NA, vlines=xax$x,
-#'          xlab="Time (seconds)", ylab="No. data points")
+#' broman::grayplot(h10$datetime, n_pts, xat=NA, vlines=xax$x,
+#'                  xlab="Time (seconds)", ylab="No. data points")
 #' axis(side=1, at=xax$x, labels=xax$labels, mgp=c(2.1, 0.5, 0), tick=FALSE)
 
 running_datacount <-
