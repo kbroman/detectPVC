@@ -58,7 +58,7 @@ find_bad_segments <-
 
     # look for regions with lots of missing data
     # count data points every sec
-    n_data <- broman::runningmean(time, rep(1, length(time)), at=time, window=1, "sum")
+    n_data <- running_datacount(time)
     w <- which(n_data < 130-missing_thresh)
     if(length(w)>0) badsegs <- rbind(badsegs, vector_to_segments(w, min_gap))
     if(nrow(badsegs)==0) return(badsegs)
