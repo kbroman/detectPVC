@@ -4,7 +4,13 @@
 \alias{running_datacount}
 \title{Get running count of amount of data}
 \usage{
-running_datacount(times, window = 1, at = NULL, tz = Sys.timezone())
+running_datacount(
+  times,
+  window = 1,
+  at = NULL,
+  n_at = NULL,
+  tz = Sys.timezone()
+)
 }
 \arguments{
 \item{times}{Vector of times}
@@ -12,6 +18,8 @@ running_datacount(times, window = 1, at = NULL, tz = Sys.timezone())
 \item{window}{Length of sliding window in seconds}
 
 \item{at}{Times at which to calculate the amount of data}
+
+\item{n_at}{Number of times at which to calculate the amount of data}
 
 \item{tz}{Time zone, to convert \code{times} using \code{\link[=convert_timestamp]{convert_timestamp()}}}
 }
@@ -21,6 +29,11 @@ centered at each time point.
 }
 \description{
 Get running sum of number of observed data points in sliding windows
+}
+\details{
+If \code{n_at} and \code{at} are both missing, we calculate amount of data at \code{times}.
+If \code{at} is missing but \code{n_at} is provided, we use \code{n_at} equally-spaced times across
+the observed range.
 }
 \examples{
 data(h10)

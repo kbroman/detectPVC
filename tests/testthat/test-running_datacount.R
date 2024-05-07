@@ -10,4 +10,7 @@ test_that("simple test of running_datacount", {
     n_pts_sub <- running_datacount(h10$time, at=h10$time[w])
     expect_equal(n_pts_sub, n_pts[w])
 
+    n_pts2 <- running_datacount(h10$time, n_at=101)
+    expect_equal(n_pts2, c(66, 118, rep(131, 5), rep(130, 87), rep(131, 5), 118, 66))
+
 })
