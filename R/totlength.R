@@ -33,6 +33,7 @@ totlength <-
 
     if(!("POSIXct" %in% class(segments[,1]) ||
          "POSIXt" %in% class(segments[,1]))) {
+        if(is.null(times)) stop("times is NULL but is needed to convert segments to date/time")
         segments <- segs_index_to_time(segments, convert_timestamp(times, tz))
     }
 
