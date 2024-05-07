@@ -19,6 +19,8 @@
 #'
 #' @param pad Pad the bad segments by this many values on each end (in index values)
 #'
+#' @param return_index If TRUE, return indexes to `time`; otherwise return actual date/times.
+#'
 #' @param tz Timezone used by [convert_timestamp()]
 #'
 #' @return Data frame with two columns: the start and end index for
@@ -37,7 +39,7 @@
 find_bad_segments <-
     function(time, signal, absval_thresh=2, runmean_thresh=0.7,
              missing_thresh=70, window=0.2, min_gap=2000, pad=400,
-             tz=Sys.timezone())
+             return_index=TRUE, tz=Sys.timezone())
 {
     stopifnot(length(time) == length(signal))
 
@@ -69,7 +71,11 @@ find_bad_segments <-
     badsegs[badsegs < 1] <- 1
     badsegs[badsegs > length(time)] <- length(time)
 
-    as.data.frame(badsegs)
+    badsegs <- as.data.frame(badsegs)
+
+    if(!return_index) badsegs <- segs_index_to_time(badsegs, time)
+
+    badsegs
 }
 
 
@@ -104,4 +110,24 @@ merge_overlaps <-
     }
 
     badsegs
+}
+
+
+segs_index_to_time <-
+    function(segs, times)
+{
+    for(i in seq_along(segs)) {
+        segs[,i] <- times[segs[,i]]
+    }
+    segs
+}
+
+
+segs_time_to_index <-
+    function(segs, times)
+{
+    for(i in seq_along(segs)) {
+        segs[,i] <- match(segs[,i], times)
+    }
+    segs
 }

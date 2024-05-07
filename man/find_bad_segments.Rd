@@ -13,6 +13,7 @@ find_bad_segments(
   window = 0.2,
   min_gap = 2000,
   pad = 400,
+  return_index = TRUE,
   tz = Sys.timezone()
 )
 }
@@ -32,6 +33,8 @@ find_bad_segments(
 \item{min_gap}{Minimum gap between bad segments (otherwise merged)}
 
 \item{pad}{Pad the bad segments by this many values on each end (in index values)}
+
+\item{return_index}{If TRUE, return indexes to \code{time}; otherwise return actual date/times.}
 
 \item{tz}{Timezone used by \code{\link[=convert_timestamp]{convert_timestamp()}}}
 }
