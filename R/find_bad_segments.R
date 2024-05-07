@@ -118,7 +118,7 @@ merge_overlaps <-
 segs_index_to_time <-
     function(segs, times)
 {
-    if(any(segs[,1] <= 1 | segs[,2] < 1)) {
+    if(any(segs[,1] < 1 | segs[,2] < 1)) {
         stop("segs can't be negative")
     }
     n <- length(times)
