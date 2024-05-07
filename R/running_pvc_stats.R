@@ -103,6 +103,14 @@ running_pvc_stats <-
                 beat_sums <- results$hr*lengths/60
                 pvc_sums <- results$pvc_percent*beat_sums/100
 
+                # drop bits with beat_sums==0
+                omit <- abs(beat_sums) < 0.1  # should be an integer
+                if(any(omit)) {
+                    lengths <- lengths[!omit]
+                    beat_sums <- beat_sums[!omit]
+                    pvc_sums <- pvc_sums[!omit]
+                }
+
                 return(data.frame(time=center,
                                   pvc_percent=sum(pvc_sums)/sum(beat_sums)*100,
                                   hr=sum(beat_sums)/sum(lengths)*60,
