@@ -33,10 +33,12 @@
 #' peak_stats <- calc_peak_stats(peaks, h10$ecg)
 #' pvc <- (peak_stats$RSdist > 6)
 #'
+#'
 #' trigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
 #' bigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NP)+", min_length=4)
 #' couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+")
 #' triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
+#' normal <- find_pvc_pattern(h10$time, peaks, pvc, pattern="N+", min_length=10)
 
 find_pvc_pattern <-
     function(times, peaks, pvc, omit_segments=NULL,
