@@ -37,4 +37,16 @@ test_that("simple test of find_pvc_pattern", {
     expect_equal(couplets, empty)
     expect_equal(triplets, empty)
 
+    normal <- find_pvc_pattern(h10$time, peaks, pvc, pattern="N+", min_length=12)
+    expected <- structure(list(start = 500, end = 2630, n_beats = 17L),
+                          class = "data.frame", row.names = c(NA,-1L))
+    expect_equal(normal, expected)
+
+    normal <- find_pvc_pattern(h10$time, peaks, pvc, pattern="N+", min_length=5)
+    expected <- structure(list(start = c(500, 2869, 4461),
+                               end = c(2630, 3616, 5105),
+                               n_beats = c(17L, 7L, 6L)),
+                          class = "data.frame", row.names = c(NA, -3L))
+    expect_equal(normal, expected)
+
 })
