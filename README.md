@@ -8,7 +8,7 @@ H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor) chest-strap hear
 We have used the [ECGLogger app](https://www.ecglogger.com/) on an iPhone
 to extract the Polar H10 data as a CSV file (or really a series of CSV
 files, in one hour blocks), and the [rsleep](https://rsleep.org/)
-package to detect R peaks in the ECG signal.
+package to detect "R" peaks in the ECG signal.
 
 
 ---
@@ -36,60 +36,73 @@ install_github("kbroman/detectPVC")
 
 ### Usage
 
-The library comes with a ~40 sec sample data set, `h10`.
+The library comes with a 10-min sample data set, `polar_h10`.
 
 ```{r}
 library(detectPVC)
-data(h10)
+data(polar_h10)
 ```
 
 Convert the included times (which are time stamps from a Polar H10, in
 1e-9 seconds) to a standard date-time values.
 
 ```{r}
-h10$datetime <- convert_timestamp(h10$time)
+polar_h10$datetime <- convert_timestamp(polar_h10$time)
 ```
 
-
-Use `detect_peaks()` to detect R peaks in the ECG trace.
+First detect bad segments in the data, with either wild values or
+missing data points.
 
 ```{r}
-peaks <- detect_peaks(h10$ecg)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 ```
 
-Plot the data, and add points above the peaks. The function
-`plot_ecg()` is a base-graphics-based plotting function to mimic a
-traditional ECG trace.
+For this example, there is just one bad segment, covering about 7 sec.
+You can get the total covered length in seconds with `tot_length()`.
 
 ```{r}
-plot_ecg(h10$datetime, h10$ecg)
-points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col="slateblue")
+totlength(bad_segs, polar_h10$time)
+```
+
+Use `detect_peaks()` to detect "R" peaks in the ECG trace.
+
+```{r}
+peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+```
+
+Plot the first 20 seconds of data, and add points above the peaks. The function
+`plot_ecg()` is a base-graphics-based plotting function with light
+gray grid lines.
+
+```{r}
+v <- 1:(130*20)
+plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
+points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 ```
 
 Use `calc_peak_stats()` to calculate some statistics about each peak.
 
 ```{r}
-peak_stats <- calc_peak_stats(peaks, h10$ecg)
+peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
 ```
 
-The statistics `pmin` and `leftRR` seem particularly good for
-identifying the PVCs.
+The simplest rule for classifying PVCs is to take `RSdist >= 7`.
+The statistic `RSdist` is the difference between the positions of the
+R and S peaks.
 
 ```{r}
-par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
-plot(peak_stats$pmin, peak_stats$leftRR, xlab="peak min", ylab="left RR")
+pvc <- (peak_stats$RSdist >= 7)
 ```
 
 Label the inferred PVCs with pink dots, and the others with green
 dots.
 
 ```{r}
-plot_ecg(h10$datetime, h10$ecg)
-pvc <- (peak_stats$pmin > -0.45)
-points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col=c("green3", "violetred")[pvc+1])
+plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
+points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", "violetred")[pvc+1])
 ```
 
-In this 40 second window, there are 5 PVCs in 40 total beats.
+In this 20 second window, there are 10 PVCs in 29 total beats.
 
 ---
 
