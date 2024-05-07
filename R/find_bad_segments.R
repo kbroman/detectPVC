@@ -71,6 +71,8 @@ find_bad_segments <-
     badsegs[badsegs < 1] <- 1
     badsegs[badsegs > length(time)] <- length(time)
 
+    badsegs <- merge_overlaps(badsegs, min_gap-pad)
+
     badsegs <- as.data.frame(badsegs)
 
     if(!return_index) badsegs <- segs_index_to_time(badsegs, time)
@@ -95,13 +97,13 @@ vector_to_segments <-
 }
 
 merge_overlaps <-
-    function(badsegs)
+    function(badsegs, min_gap)
 {
     # merge overlap
     d <- badsegs[-nrow(badsegs),2] - badsegs[-1,1]
     while(nrow(badsegs) > 1 && any(d > 0)) {
         omit <- NULL
-        for(i in which(d > 0)) {
+        for(i in which(d > -min_gap)) {
             badsegs[i+1,1] <- badsegs[i,1]
             omit <- c(omit, i)
         }
@@ -116,6 +118,14 @@ merge_overlaps <-
 segs_index_to_time <-
     function(segs, times)
 {
+    if(any(segs[,1] <= 1 | segs[,2] < 1)) {
+        stop("segs can't be negative")
+    }
+    n <- length(times)
+    if(any(segs[,1] > n | segs[,2] > n)) {
+        stop("segs values must be <= length(times)")
+    }
+
     for(i in seq_along(segs)) {
         segs[,i] <- times[segs[,i]]
     }
@@ -126,8 +136,19 @@ segs_index_to_time <-
 segs_time_to_index <-
     function(segs, times)
 {
+    some_not_found <- FALSE
     for(i in seq_along(segs)) {
         segs[,i] <- match(segs[,i], times)
+
+        if(any(is.na(segs[,i]))) {
+            some_not_found <- TRUE
+        }
     }
+
+    if(some_not_found) {
+        # (avoiding duplicate warnings)
+        warning("some segs not found in times")
+    }
+
     segs
 }
