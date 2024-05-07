@@ -4,13 +4,20 @@
 \alias{read_multcsv}
 \title{Read multiple related CSV files}
 \usage{
-read_multcsv(dir = ".", files = NULL)
+read_multcsv(dir = ".", files = NULL, dont_modify = FALSE, tz = Sys.timezone())
 }
 \arguments{
 \item{dir}{Subdirectory containing the files.}
 
 \item{files}{Optional character vector of file names. If not provided, we use
 \code{list.files(dir)} to grab all CSV files in the directory \code{dir}.}
+
+\item{dont_modify}{If TRUE, just rbind the file contents together. If FALSE,
+look for a \code{time} column and reorder the rows by that column, and then
+add a converted \code{datetime} column using \code{\link[=convert_timestamp]{convert_timestamp()}}.}
+
+\item{tz}{Time zone, used if \code{dont_modify=FALSE} and there is a time
+column to convert.}
 }
 \value{
 A data.frame with the contents of all files row-binded together.
@@ -21,4 +28,8 @@ Read multiple CSV files all with the same columns and rbind them together
 \details{
 At least one of \code{files} or \code{dir} must be provided.
 The files should all have the same set of columns.
+
+If \code{dont_modify=FALSE} and there is a column \code{time}, the rows are
+reordered using this column and a \code{datetime} column is added,
+converting \code{time} with \code{\link[=convert_timestamp]{convert_timestamp()}}
 }
