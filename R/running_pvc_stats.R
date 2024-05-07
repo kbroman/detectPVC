@@ -65,10 +65,11 @@ running_pvc_stats <-
         beat_sum <- sum(peaks %in% v)
         pvc_sum <- sum(pvc[peaks %in% v])
 
-        data.frame(time=center,
+        result <- data.frame(time=center,
                    pvc_percent=pvc_sum/beat_sum*100,
                    hr=beat_sum/length*60,
                    window_length=length)
+        result
     }
 
     batch_func <-
@@ -83,12 +84,13 @@ running_pvc_stats <-
                 v <- v[!omit]
                 if(length(v)==0) return(NULL)
                 dv <- diff(v)
-                if(all(dv)==1) { # just one interval so return results
+                if(all(dv==1)) { # just one interval so return results
                     return(calc_stats(v))
                 }
 
                 # split into a set of intervals
-                vspl <- split(v, cut(v, c(-Inf, which(dv > 1)+0.5, Inf)))
+                vspl <- split(v, cut(v, c(-Inf, v[which(dv > 1)]+0.5, Inf)))
+                # toss small intervals
                 vspl <- vspl[vapply(vspl, function(vv) diff(range(vv))>1, TRUE)]
                 if(length(vspl)==0) return(NULL)
                 else if(length(vspl)==1) return(calc_stats(vspl[[1]]))
@@ -96,13 +98,13 @@ running_pvc_stats <-
                 results <- do.call("rbind", lapply(vspl, calc_stats))
 
                 # combine the results of the set of intervals
-                center <- median(times[v])
-                lengths <- results$window_lengths
+                center <- median(range(times[v]))
+                lengths <- results$window_length
                 beat_sums <- results$hr*lengths/60
                 pvc_sums <- results$pvc_percent*beat_sums/100
 
-                return(data.frame(time=median(times[v]),
-                                  pvc_percent=sum(pvc_sums)/sum(beat_sums),
+                return(data.frame(time=center,
+                                  pvc_percent=sum(pvc_sums)/sum(beat_sums)*100,
                                   hr=sum(beat_sums)/sum(lengths)*60,
                                   window_length=sum(lengths)))
 
