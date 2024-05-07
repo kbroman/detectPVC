@@ -9,6 +9,7 @@ find_bad_segments(
   signal,
   absval_thresh = 2,
   runmean_thresh = 0.7,
+  missing_thresh = 70,
   window = 0.2,
   min_gap = 2000,
   pad = 400,
@@ -24,6 +25,8 @@ find_bad_segments(
 
 \item{runmean_thresh}{Threshold on running mean of absolute value of signal}
 
+\item{missing_thresh}{Maximum amount of missing data within 1 second}
+
 \item{window}{Window for running mean (in seconds)}
 
 \item{min_gap}{Minimum gap between bad segments (otherwise merged)}
@@ -37,7 +40,8 @@ Data frame with two columns: the start and end index for
 each identified bad segment.
 }
 \description{
-Find particularly noisy regions in ECG signal, with large values far from 0
+Find particularly noisy regions in ECG signal, with large values
+far from 0, plus also regions with excessive missing data.
 }
 \examples{
 data(h10)
