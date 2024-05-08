@@ -33,7 +33,7 @@ datetimes, or character strings like \code{"2024-05-03 13:27"} or \code{"2024-05
 
 \item{length}{Length of time for each panel in seconds}
 
-\item{n_panel}{Number of panels}
+\item{n_panel}{Number of panels.}
 
 \item{peaks}{Optional vector of peak indices; if provided, dots will be plotted at each
 peak location}
@@ -68,6 +68,11 @@ None.
 }
 \description{
 Plot a longer window of ECG signals across multiple panels arranged in one column.
+}
+\details{
+We use \code{par(mrow=c(n_panel, 1))} before creating the set of panels.
+However, in the case \code{n_panel==1}, we don't run \code{par(mfrow)} and so this can be
+used in a more general way.
 }
 \examples{
 data(h10)
