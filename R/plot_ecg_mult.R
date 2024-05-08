@@ -12,7 +12,7 @@
 #'
 #' @param length Length of time for each panel in seconds
 #'
-#' @param n_panel Number of panels
+#' @param n_panel Number of panels.
 #'
 #' @param peaks Optional vector of peak indices; if provided, dots will be plotted at each
 #' peak location
@@ -44,6 +44,10 @@
 #'
 #' @return None.
 #'
+#' @details We use `par(mrow=c(n_panel, 1))` before creating the set of panels.
+#' However, in the case `n_panel==1`, we don't run `par(mfrow)` and so this can be
+#' used in a more general way.
+#'
 #' @importFrom graphics par points lines rect
 #'
 #' @export
@@ -69,7 +73,7 @@ plot_ecg_mult <-
     old_mfrow <- par("mfrow")
     on.exit(par(mfrow=old_mfrow))
 
-    par(mfrow=c(n_panel, 1))
+    if(n_panel > 1) par(mfrow=c(n_panel, 1))
 
     if(is.null(start)) start <- times[1]
     times <- convert_timestamp(times, tz=tz)
