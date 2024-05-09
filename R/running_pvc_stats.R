@@ -60,6 +60,13 @@ running_pvc_stats <-
     calc_stats <-
         function(v)
     {
+        if(length(v)==0) {
+            return(data.frame(time=numeric(0),
+                              pvc_percent=numeric(0),
+                              hr=numeric(0),
+                              window_length=numeric(0)))
+        }
+
         center <- median(times[v])
         length <- diff(range(as.numeric(times[v])))
         beat_sum <- sum(peaks %in% v)
