@@ -47,9 +47,6 @@ Find particularly noisy regions in ECG signal, with large values
 far from 0, plus also regions with excessive missing data.
 }
 \examples{
-data(h10)
-empty_df <- find_bad_segments(h10$time, h10$ecg)
-
-h10$ecg[3896:3931] <- 2.5
-find_bad_segments(h10$time, h10$ecg)
+data(polar_h10)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 }

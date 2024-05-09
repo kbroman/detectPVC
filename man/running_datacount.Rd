@@ -36,12 +36,10 @@ If \code{at} is missing but \code{n_at} is provided, we use \code{n_at} equally-
 the observed range.
 }
 \examples{
-data(h10)
-h10$datetime <- convert_timestamp(h10$time)
-n_pts <- running_datacount(h10$time)
+data(polar_h10)
+polar_h10$datetime <- convert_timestamp(polar_h10$time)
+n_pts <- running_datacount(polar_h10$datetime)
 
-xax <- broman::time_axis(h10$datetime)
-broman::grayplot(h10$datetime, n_pts, xat=NA, vlines=xax$x,
-                 xlab="Time (seconds)", ylab="No. data points")
-axis(side=1, at=xax$x, labels=xax$labels, mgp=c(2.1, 0.5, 0), tick=FALSE)
+broman::timeplot(polar_h10$datetime, n_pts,
+                  xlab="Time (seconds)", ylab="No. data points")
 }

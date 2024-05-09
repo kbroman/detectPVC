@@ -48,8 +48,9 @@ Detect R peaks in a raw ECG signal, using a modified version of
 \code{rsleep::detect_rpeaks()} but using a sliding window.
 }
 \examples{
-data(h10)
-peaks <- detect_peaks(h10$ecg)
+data(polar_h10)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
 }
 \seealso{
 \code{\link[=adjust_peaks]{adjust_peaks()}}

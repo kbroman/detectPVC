@@ -37,7 +37,8 @@ None.
 Plot of ECG signal approximately matching traditional ECG graphs
 }
 \examples{
-data(h10)
-plot_ecg(h10$ecg)
-plot_ecg(h10$time, h10$ecg)
+data(polar_h10)
+v <- 1:(30*130)
+plot_ecg(polar_h10$ecg[v])
+plot_ecg(polar_h10$time[v], polar_h10$ecg[v])
 }

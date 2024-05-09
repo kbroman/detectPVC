@@ -37,7 +37,8 @@ and the distance from the R peak to the S trough.
 Calculate summary statistics for each R peak from ECG data, to help characterize which are normal and which are PVCs
 }
 \examples{
-data(h10)
-peaks <- detect_peaks(h10$ecg)
-peak_stats <- calc_peak_stats(peaks, h10$ecg)
+data(polar_h10)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
 }

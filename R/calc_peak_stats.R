@@ -23,9 +23,10 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' peaks <- detect_peaks(h10$ecg)
-#' peak_stats <- calc_peak_stats(peaks, h10$ecg)
+#' data(polar_h10)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+#' peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
 
 calc_peak_stats <-
     function(peaks, signal, window=10, qtmax=60, rsmax=20,

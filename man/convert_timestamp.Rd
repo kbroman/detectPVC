@@ -20,7 +20,6 @@ A vector of Date objects
 Convert the date/time stamp in the Polar H10 data to two columns: date/time and fractional seconds
 }
 \examples{
-data(h10)
-ts <- convert_timestamp(h10[,1])
-h10 <- cbind(h10, datetime=ts)
+data(polar_h10)
+polar_h10$datetime <- convert_timestamp(polar_h10$time)
 }

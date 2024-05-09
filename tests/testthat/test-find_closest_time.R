@@ -8,6 +8,6 @@ test_that("simple test of find_closest_time", {
                  convert_timestamp("2024-05-01 14:00", tz=tz), length=300)
     expect_equal(find_closest_time("2024-05-01 12:00", times, tz=tz), 101)
 
-    expect_equal(find_closest_time("2024-04-29 22:33:00", h10$time, tz=tz), 3397)
+    expect_equal(find_closest_time("2024-05-05 09:52:24", polar_h10$time, tz=tz), 18744)
 
 })

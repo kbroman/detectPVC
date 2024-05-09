@@ -16,9 +16,8 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' ts <- convert_timestamp(h10[,1])
-#' h10 <- cbind(h10, datetime=ts)
+#' data(polar_h10)
+#' polar_h10$datetime <- convert_timestamp(polar_h10$time)
 
 convert_timestamp <-
     function(timestamp, tz=Sys.timezone())

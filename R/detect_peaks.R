@@ -38,8 +38,9 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' peaks <- detect_peaks(h10$ecg)
+#' data(polar_h10)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
 
 detect_peaks <-
     function(signal, window=80000, pad=window/4, sRate=1e9/7682304, peak_limit=1.5,

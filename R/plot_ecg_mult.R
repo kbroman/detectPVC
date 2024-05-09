@@ -53,15 +53,15 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' plot_ecg_mult(h10$time, h10$ecg, start="2024-04-29 22:32", length=20, n_panel=2)
+#' data(polar_h10)
+#' plot_ecg_mult(polar_h10$time, polar_h10$ecg, start="2024-05-05 09:52", length=20, n_panel=2)
 #'
-#' peaks <- detect_peaks(h10$ecg)
-#' peak_stats <- calc_peak_stats(peaks, h10$ecg)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+#' peak_stats <- calc_peak_stats(peaks, polar_h10$ecg, omit_segments=bad_segs)
 #' pvc <- (peak_stats$RSdist > 6)
-#' plot_ecg_mult(h10$time, h10$ecg, start="2024-04-29 22:32", length=20, n_panel=2,
-#'               peaks=peaks, pvc=pvc)
-
+#' plot_ecg_mult(polar_h10$time, polar_h10$ecg, start="2024-05-05 09:50:30", length=20, n_panel=2,
+#'               peaks=peaks, pvc=pvc, hilit_segments=bad_segs)
 
 plot_ecg_mult <-
     function(times, signal, start=NULL, length=30, n_panel=4,
