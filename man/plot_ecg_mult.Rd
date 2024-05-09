@@ -17,7 +17,7 @@ plot_ecg_mult(
   pch_peak = 16,
   cex_peak = 1,
   bg_peak = c("slateblue", "violetred"),
-  col_segments = "#c0d3",
+  col_segments = "#cc00dd33",
   tz = Sys.timezone(),
   ...
 )

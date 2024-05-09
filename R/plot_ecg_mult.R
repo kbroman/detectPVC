@@ -68,7 +68,7 @@ plot_ecg_mult <-
              peaks=NULL, pvc=NULL, hilit_segments=NULL,
              col_peak=c("slateblue", "violetred"),
              pch_peak=16, cex_peak=1, bg_peak=c("slateblue", "violetred"),
-             col_segments="#c0d3", tz=Sys.timezone(), ...)
+             col_segments="#cc00dd33", tz=Sys.timezone(), ...)
 {
     old_mfrow <- par("mfrow")
     on.exit(par(mfrow=old_mfrow))
