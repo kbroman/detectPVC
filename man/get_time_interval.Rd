@@ -36,8 +36,10 @@ Two of \code{start}, \code{end}, and \code{length}.
 }
 \examples{
 data(polar_h10)
-time_int1 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00", length=4)
-time_int2 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00", end="2024-05-05 09:54:20")
+time_int1 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00",
+                               length=4)
+time_int2 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00",
+                               end="2024-05-05 09:54:20")
 }
 \seealso{
 \code{\link[=convert_timestamp]{convert_timestamp()}}
