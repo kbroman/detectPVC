@@ -2,9 +2,11 @@
 #'
 #' Calculate summary statistics for each R peak from ECG data, to help characterize which are normal and which are PVCs
 #'
-#' @param peaks Location of R peaks as numeric indexes (from [detect_peaks()] with `return_index=TRUE`)
+#' @param times Vector of times for ECG signals
 #'
 #' @param signal Vector of ECG signal
+#'
+#' @param peaks Location of R peaks as numeric indexes (from [detect_peaks()] with `return_index=TRUE`)
 #'
 #' @param window Tight window around each peak to look for local max and min
 #'
@@ -17,8 +19,8 @@
 #'
 #' @return A data.frame with local max and min of ECG around peak,
 #'     height of T (local max before the next peak), RR intervals
-#'     to left and right of this R peak, the ratio `leftRR`/`rightRR`,
-#'     and the distance from the R peak to the S trough.
+#'     to left and right of this R peak (in seconds), the ratio `leftRR`/`rightRR`,
+#'     and the time from the R peak to the S trough (in milliseconds).
 #'
 #' @export
 #'
@@ -26,13 +28,18 @@
 #' data(polar_h10)
 #' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 #' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
-#' peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
+#' peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
 
 calc_peak_stats <-
-    function(peaks, signal, window=10, qtmax=60, rsmax=20,
+    function(times, signal, peaks, window=10, qtmax=60, rsmax=20,
              omit_segments=NULL)
 {
-    diff_peaks <- diff(peaks)
+    stopifnot(length(times) == length(signal))
+    stopifnot(all(peaks >= 1 & peaks <= length(times)))
+
+    times <- convert_timestamp(times)
+
+    diff_peaks <- diff(as.numeric(times[peaks]))
     max_index <- length(signal)
 
     result <- data.frame(
@@ -52,10 +59,11 @@ calc_peak_stats <-
         leftRR=c(NA, diff_peaks),
         rightRR=c(diff_peaks, NA),
         RRratio=rep(NA, length(peaks)),
-        RSdist=vapply(peaks, function(a) {
+        RStime=vapply(peaks, function(a) {
             v <- a:(a+rsmax)
             v <- v[v >= 1 & v <= max_index]
-            which.min(signal[v])}, 1)
+            wh_min <- which.min(signal[v])
+            as.numeric(times[a+wh_min] - times[a])*1000}, 1)
     )
 
     # if omitted segments, need to censor leftRR and rightRR

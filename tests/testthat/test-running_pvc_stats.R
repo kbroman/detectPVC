@@ -8,8 +8,8 @@ test_that("simple test of running_pvc_stats", {
     polar_h10 <- polar_h10[20001:30000,]
 
     peaks <- detect_peaks(polar_h10$ecg)
-    peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
-    pvc <- (peak_stats$RSdist > 6)
+    peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
+    pvc <- (peak_stats$RStime > 50)
 
     polar_h10$datetime <- convert_timestamp(polar_h10$time, tz=tz)
     at <- seq(polar_h10$datetime[1], max(polar_h10$datetime), by=10)

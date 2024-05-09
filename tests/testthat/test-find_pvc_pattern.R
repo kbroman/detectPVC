@@ -5,8 +5,8 @@ test_that("simple test of find_pvc_pattern", {
     data(polar_h10)
     bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
     peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
-    peak_stats <- calc_peak_stats(peaks, polar_h10$ecg, omit_segments=bad_segs)
-    pvc <- (peak_stats$RSdist > 6)
+    peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks, omit_segments=bad_segs)
+    pvc <- (peak_stats$RStime > 50)
 
     trigeminy <- find_pvc_pattern(polar_h10$time, peaks, pvc, pattern="(NNP)+",
                                   min_length=106, tz="America/Chicago")

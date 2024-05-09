@@ -58,8 +58,8 @@
 #'
 #' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 #' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
-#' peak_stats <- calc_peak_stats(peaks, polar_h10$ecg, omit_segments=bad_segs)
-#' pvc <- (peak_stats$RSdist > 6)
+#' peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks, omit_segments=bad_segs)
+#' pvc <- (peak_stats$RStime > 50)
 #' plot_ecg_mult(polar_h10$time, polar_h10$ecg, start="2024-05-05 09:50:30", length=20, n_panel=2,
 #'               peaks=peaks, pvc=pvc, hilit_segments=bad_segs)
 

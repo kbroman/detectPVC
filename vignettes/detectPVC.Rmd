@@ -59,15 +59,14 @@ points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 Use `calc_peak_stats()` to calculate some statistics about each peak.
 
 ```{r calc_peak_stats}
-peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
+peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
 ```
 
-The simplest rule for classifying PVCs is to take `RSdist >= 7`.
-The statistic `RSdist` is the difference between the positions of the
-R and S peaks.
+The simplest rule for classifying PVCs is to take `RStime > 50`.
+The statistic `RStime` is the time between the R and S peaks in milliseconds.
 
 ```{r classify_pvc}
-pvc <- (peak_stats$RSdist >= 7)
+pvc <- (peak_stats$RStime > 50)
 ```
 
 Label the inferred PVCs with pink dots, and the others with green
