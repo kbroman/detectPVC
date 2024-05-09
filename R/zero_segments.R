@@ -13,9 +13,9 @@
 #'
 #' @examples
 #' data(polar_h10)
-#' bads_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 #' polar_h10$ecg_z <- zero_segments(polar_h10$ecg, bad_segs)
-#' plot_ecg_mult(polar_h10$time, polar_h10$ecg_z)
+#' plot_ecg_mult(polar_h10$time, polar_h10$ecg_z, hilit_segments=bad_segs)
 
 zero_segments <-
     function(signal, segments)
