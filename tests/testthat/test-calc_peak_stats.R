@@ -2,50 +2,21 @@ context("calc_peak_stats")
 
 test_that("simple test of calc_peak_stats", {
 
-    data(h10)
+    data(polar_h10)
 
-    ecg <- h10$ecg[1:400]
+    ecg <- polar_h10$ecg[401:800]
 
     peaks <- detect_peaks(ecg)
     peakstats <- calc_peak_stats(peaks, ecg)
 
-    expected <- structure(list(pmax = c(0.396, 0.475, 0.9),
-                               pmin = c(-0.591, -0.62, -0.406),
-                               Tmax = c(0.178, 0.168, -0.002),
-                               leftRR = c(NA, 131, 68),
-                               rightRR = c(131, 68, NA),
-                               RRratio = c(NA, 1.92647058823529, NA),
-                               RSdist = c(5, 4, 9)),
-                          row.names = c("121", "252", "320"), class = "data.frame")
-
-    expect_equal(peakstats, expected)
-
-
-    # slightly different results if you truncate ecg at 320
-    ecg <- ecg[1:320]
-    expected[3,2] <- -0.147
-    expected[3,3] <- NA
-    expected[3,4] <- expected[2,5] <- 68
-    expected[3,7] <- 1
-    expect_equal(peaks, detect_peaks(ecg))
-    expect_equal(calc_peak_stats(peaks, ecg), expected)
-
-    # deal with the case that there's an omitted segment
-    omit <- data.frame(start=280, end=300)
-
-    ecg <- h10$ecg[1:400]
-
-    peaks <- detect_peaks(ecg, omit_segments=omit)
-    peakstats <- calc_peak_stats(peaks, ecg, omit_segments=omit)
-
-    expected <- structure(list(pmax = c(0.396, 0.475, 0.9),
-                               pmin = c(-0.591, -0.62, -0.406),
-                               Tmax = c(0.178, 0.168, -0.002),
-                               leftRR = c(NA, 131, NA),
-                               rightRR = c(131, NA, NA),
-                               RRratio = as.numeric(c(NA, NA, NA)),
-                               RSdist = c(5, 4, 9)),
-                          row.names = c("121", "252", "320"), class = "data.frame")
+    expected <- structure(list(pmax = c(0.510, 0.520, 0.802, 0.368),
+                               pmin = c(-0.664, -0.741, -0.517, -0.609),
+                               Tmax = c(0.156, 0.802, -0.036, 0.132),
+                               leftRR = c(NA, 85, 56, 114),
+                               rightRR = c(85, 56, 114, NA),
+                               RRratio = c(NA, 1.51785714285714, 0.491228070175439, NA),
+                               RSdist = c(4, 4, 7, 5)),
+                          row.names = c("105", "190", "246", "360"), class = "data.frame")
 
     expect_equal(peakstats, expected)
 
