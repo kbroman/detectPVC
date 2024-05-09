@@ -28,8 +28,10 @@
 #' polar_h10$datetime <- convert_timestamp(polar_h10$time)
 #' n_pts <- running_datacount(polar_h10$datetime)
 #'
-#' broman::timeplot(polar_h10$datetime, n_pts,
-#'                   xlab="Time (seconds)", ylab="No. data points")
+#' xax <- broman::time_axis(polar_h10$datetime)
+#' broman::grayplot(polar_h10$datetime, n_pts, xat=NA, vlines=xax$x,
+#'                   xlab="Time", ylab="No. data points")
+#' axis(side=1, at=xax$x, labels=xax$label, tick=FALSE, mgp=c(2.1, 0.5, 0))
 
 running_datacount <-
     function(times, window=1, at=NULL, n_at=NULL, tz=Sys.timezone())
