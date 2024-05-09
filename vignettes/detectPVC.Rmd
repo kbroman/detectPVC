@@ -25,59 +25,60 @@ package to detect R peaks in the ECG signal.
 
 ### Usage
 
-The library comes with a ~40 sec sample data set, `h10`.
+The library comes with a ~10 min sample data set, `polar_h10`.
 
-```{r}
+```{r load_data}
 library(detectPVC)
-data(h10)
+data(polar_h10)
 ```
 
 Convert the included times (which are time stamps from a Polar H10, in
-1e-9 seconds) to a standard date-time values.
+nanoseconds) to a standard date-time values.
 
-```{r}
-h10$datetime <- convert_timestamp(h10$time)
+```{r convert_timestamp}
+polar_h10$datetime <- convert_timestamp(polar_h10$time)
 ```
 
 
 Use `detect_peaks()` to detect R peaks in the ECG trace.
 
-```{r}
-peaks <- detect_peaks(h10$ecg)
+```{r detect_peaks}
+peaks <- detect_peaks(polar_h10$ecg)
 ```
 
-Plot the data, and add points above the peaks. The function
-`plot_ecg()` is a base-graphics-based plotting function to mimic a
-traditional ECG trace.
+Plot the first 20 seconds of the data, and add points above the peaks. The function
+`plot_ecg()` is a base-graphics-based plotting function with light
+gray grid lines.
 
-```{r}
-plot_ecg(h10$datetime, h10$ecg)
-points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col="slateblue")
+```{r plot_ecg}
+v <- 1:(130*20)
+plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
+points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 ```
 
 Use `calc_peak_stats()` to calculate some statistics about each peak.
 
-```{r}
-peak_stats <- calc_peak_stats(peaks, h10$ecg)
+```{r calc_peak_stats}
+peak_stats <- calc_peak_stats(peaks, polar_h10$ecg)
 ```
 
-The statistics `pmin` and `leftRR` seem particularly good for
-identifying the PVCs.
+The simplest rule for classifying PVCs is to take `RSdist >= 7`.
+The statistic `RSdist` is the difference between the positions of the
+R and S peaks.
 
-```{r}
-par(las=1, mar=c(4.1, 4.1, 0.6, 0.6))
-plot(peak_stats$pmin, peak_stats$leftRR, xlab="peak min", ylab="left RR")
+```{r classify_pvc}
+pvc <- (peak_stats$RSdist >= 7)
 ```
 
 Label the inferred PVCs with pink dots, and the others with green
 dots.
 
-```{r}
-plot_ecg(h10$datetime, h10$ecg)
-pvc <- (peak_stats$pmin > -0.45)
-points(h10$datetime[peaks], rep(1, length(peaks)), pch=16, col=c("green3", "violetred")[pvc+1])
+```{r plot_ecg_again}
+plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
+points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", "violetred")[pvc+1])
 ```
 
-In this 40 second window, there are `r sum(pvc)` PVCs in `r length(pvc)` total beats.
+In this 20 second window, there are `r sum(pvc[peaks %in% v])` PVCs in
+`r sum(peaks %in% v)` total beats.
 
 ---
