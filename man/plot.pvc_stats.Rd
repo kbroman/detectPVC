@@ -36,11 +36,13 @@ Plot running PVC statistics from \code{\link[=running_pvc_stats]{running_pvc_sta
 Makes a plot with two panels, of percent PVC vs time and heart rate vs time.
 }
 \examples{
-data(h10)
-peaks <- detect_peaks(h10$ecg)
-peak_stats <- calc_peak_stats(peaks, h10$ecg)
+data(polar_h10)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+peak_stats <- calc_peak_stats(peaks, polar_h10$ecg, omit_segments=bad_segs)
 pvc <- (peak_stats$RSdist > 6)
 
-pvc_stats <- running_pvc_stats(h10$time, peaks, pvc, window=30, n_at=4)
+pvc_stats <- running_pvc_stats(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+                               window=60, n_at=100)
 plot(pvc_stats)
 }

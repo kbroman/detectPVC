@@ -12,10 +12,10 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' h10$ecg[3896:3931] <- 2.5  # stick in some bad data
-#' badseg <- find_bad_segments(h10$time, h10$ecg)
-#' h10$ecg_z <- zero_segments(h10$ecg, badseg)
+#' data(polar_h10)
+#' bads_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' polar_h10$ecg_z <- zero_segments(polar_h10$ecg, bad_segs)
+#' plot_ecg_mult(polar_h10$time, polar_h10$ecg_z)
 
 zero_segments <-
     function(signal, segments)

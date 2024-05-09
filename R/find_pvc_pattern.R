@@ -28,17 +28,22 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' peaks <- detect_peaks(h10$ecg)
-#' peak_stats <- calc_peak_stats(peaks, h10$ecg)
+#' data(polar_h10)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+#' peak_stats <- calc_peak_stats(peaks, polar_h10$ecg, omit_segments=bad_segs)
 #' pvc <- (peak_stats$RSdist > 6)
 #'
-#'
-#' trigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NNP)+")
-#' bigeminy <- find_pvc_pattern(h10$time, peaks, pvc, pattern="(NP)+", min_length=4)
-#' couplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+")
-#' triplets <- find_pvc_pattern(h10$time, peaks, pvc, pattern="PP+", min_length=3)
-#' normal <- find_pvc_pattern(h10$time, peaks, pvc, pattern="N+", min_length=10)
+#' trigeminy <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+#'                               pattern="(NNP)+")
+#' bigeminy <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+#'                              pattern="(NP)+", min_length=4)
+#' couplets <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+#'                              pattern="PP+")
+#' triplets <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+#'                              pattern="PP+", min_length=3)
+#' normal <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
+#'                            pattern="N+", min_length=10)
 
 find_pvc_pattern <-
     function(times, peaks, pvc, omit_segments=NULL,

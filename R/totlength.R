@@ -16,14 +16,11 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' empty_df <- find_bad_segments(h10$time, h10$ecg)
+#' data(polar_h10)
+#' badsegs_i <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' totlength(badsegs_i, polar_h10$time)
 #'
-#' h10$ecg[3896:3931] <- 2.5
-#' badsegs_i <- find_bad_segments(h10$time, h10$ecg)
-#' totlength(badsegs_i, h10$time)
-#'
-#' badsegs_t <- find_bad_segments(h10$time, h10$ecg, return_index=FALSE)
+#' badsegs_t <- find_bad_segments(polar_h10$time, polar_h10$ecg, return_index=FALSE)
 #' totlength(badsegs_t)
 
 totlength <-

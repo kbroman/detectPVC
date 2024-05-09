@@ -26,9 +26,10 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' plot_ecg(h10$ecg)
-#' plot_ecg(h10$time, h10$ecg)
+#' data(polar_h10)
+#' v <- 1:(30*130)
+#' plot_ecg(polar_h10$ecg[v])
+#' plot_ecg(polar_h10$time[v], polar_h10$ecg[v])
 
 plot_ecg <-
     function(times, signal, vlines.col="gray70", vlines.minor.col="gray80", bgcolor="gray98", tz=Sys.timezone(), ...)

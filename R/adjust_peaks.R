@@ -15,9 +15,10 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' peaks <- detect_peaks(h10$ecg)
-#' peaks_adj <- adjust_peaks(peaks, h10$ecg)
+#' data(polar_h10)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+#' peaks <- detect_peaks(polar_h10$ecg, adjust=FALSE, omit_segments=bad_segs)
+#' peaks_adj <- adjust_peaks(peaks, polar_h10$ecg)
 
 adjust_peaks <-
     function(peaks, signal, window=10)

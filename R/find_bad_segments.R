@@ -30,11 +30,8 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' empty_df <- find_bad_segments(h10$time, h10$ecg)
-#'
-#' h10$ecg[3896:3931] <- 2.5
-#' find_bad_segments(h10$time, h10$ecg)
+#' data(polar_h10)
+#' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 
 find_bad_segments <-
     function(time, signal, absval_thresh=2, runmean_thresh=0.7,

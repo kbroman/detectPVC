@@ -20,9 +20,10 @@ Vector of peaks, adjusted to hit the local max
 Adjust the estimated R peaks from \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}} to hit the local maximum.
 }
 \examples{
-data(h10)
-peaks <- detect_peaks(h10$ecg)
-peaks_adj <- adjust_peaks(peaks, h10$ecg)
+data(polar_h10)
+bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+peaks <- detect_peaks(polar_h10$ecg, adjust=FALSE, omit_segments=bad_segs)
+peaks_adj <- adjust_peaks(peaks, polar_h10$ecg)
 }
 \seealso{
 \code{\link[=detect_peaks]{detect_peaks()}}

@@ -26,9 +26,9 @@
 #' @export
 #'
 #' @examples
-#' data(h10)
-#' time_int1 <- get_time_interval(h10$time, start="2024-04-29 22:33:00", length=4)
-#' time_int2 <- get_time_interval(h10$time, start="2024-04-29 22:33:00", end="2024-04-29 22:33:10")
+#' data(polar_h10)
+#' time_int1 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00", length=4)
+#' time_int2 <- get_time_interval(polar_h10$time, start="2024-05-05 09:52:00", end="2024-05-05 09:54:20")
 
 get_time_interval <-
     function(times, start=NULL, end=NULL, length=NULL, tz=Sys.timezone())
