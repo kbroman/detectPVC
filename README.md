@@ -3,8 +3,10 @@
 [![R-CMD-check](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml)
 [![zenodo DOI](https://zenodo.org/badge/794298079.svg)](https://zenodo.org/doi/10.5281/zenodo.11174768)
 
-R package to detect premature ventricular complexes (PVCs) in data from a [Polar
-H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor) chest-strap heart rate sensor.
+R package to detect [_premature ventricular complexes
+(PVCs)_](https://en.wikipedia.org/wiki/Premature_ventricular_contraction)
+in data from a [Polar H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor)
+chest-strap heart rate sensor.
 
 We have used the [ECGLogger app](https://www.ecglogger.com/) on an iPhone
 to extract the Polar H10 data as a CSV file (or really a series of CSV
