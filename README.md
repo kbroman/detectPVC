@@ -1,6 +1,7 @@
 ## detectPVC - detect premature ventricular complexes with Polar H10
 
 [![R-CMD-check](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml)
+[![zenodo DOI](https://zenodo.org/badge/794298079.svg)](https://zenodo.org/doi/10.5281/zenodo.11174768)
 
 R package to detect premature ventricular complexes (PVCs) in data from a [Polar
 H10](https://www.polar.com/us-en/sensors/h10-heart-rate-sensor) chest-strap heart rate sensor.
