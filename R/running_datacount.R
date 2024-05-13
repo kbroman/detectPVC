@@ -45,5 +45,7 @@ running_datacount <-
     }
     else at <- convert_timestamp(at, tz=tz)
 
-    broman::runningmean(times, rep(1, length(times)), at=at, window=window, "sum")
+    result <- broman::runningmean(times, rep(1, length(times)), at=at, window=window, "sum")
+    result[is.na(result)] <- 0
+    result
 }
