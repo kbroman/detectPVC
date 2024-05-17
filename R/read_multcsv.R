@@ -14,6 +14,11 @@
 #' @param tz Time zone, used if `dont_modify=FALSE` and there is a time
 #' column to convert.
 #'
+#' @param cores Number of CPU cores to use, for parallel calculations.
+#' (If `0`, use [parallel::detectCores()].)
+#' Alternatively, this can be links to a set of cluster sockets, as
+#' produced by [parallel::makeCluster()].
+#'
 #' @details At least one of `files` or `dir` must be provided.
 #' The files should all have the same set of columns.
 #'
@@ -27,7 +32,7 @@
 #' @export
 
 read_multcsv <-
-    function(dir=".", files=NULL, dont_modify=FALSE, tz=Sys.timezone())
+    function(dir=".", files=NULL, dont_modify=FALSE, tz=Sys.timezone(), cores=1)
 {
     if(is.null(files)) {
         if(is.null(dir)) stop("Provide at least one of files or dir")
@@ -40,7 +45,11 @@ read_multcsv <-
     }
     if(!is.null(dir)) files <- file.path(dir, files)
 
-    result <- do.call("rbind", lapply(files, read.csv))
+    cores <- setup_cluster(cores)
+
+    result <- cluster_lapply(cores, files, read.csv)
+
+    result <- do.call("rbind", result)
 
     if(!dont_modify && "time" %in% colnames(result)) {
         result <- result[order(result$time), , drop=FALSE]

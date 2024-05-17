@@ -4,7 +4,13 @@
 \alias{read_multcsv}
 \title{Read multiple related CSV files}
 \usage{
-read_multcsv(dir = ".", files = NULL, dont_modify = FALSE, tz = Sys.timezone())
+read_multcsv(
+  dir = ".",
+  files = NULL,
+  dont_modify = FALSE,
+  tz = Sys.timezone(),
+  cores = 1
+)
 }
 \arguments{
 \item{dir}{Subdirectory containing the files.}
@@ -18,6 +24,11 @@ add a converted \code{datetime} column using \code{\link[=convert_timestamp]{con
 
 \item{tz}{Time zone, used if \code{dont_modify=FALSE} and there is a time
 column to convert.}
+
+\item{cores}{Number of CPU cores to use, for parallel calculations.
+(If \code{0}, use \code{\link[parallel:detectCores]{parallel::detectCores()}}.)
+Alternatively, this can be links to a set of cluster sockets, as
+produced by \code{\link[parallel:makeCluster]{parallel::makeCluster()}}.}
 }
 \value{
 A data.frame with the contents of all files row-binded together.
