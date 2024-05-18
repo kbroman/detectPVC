@@ -19,7 +19,7 @@
 #' If `at` is missing but `n_at` is provided, we use `n_at` equally-spaced times across
 #' the observed range.
 #'
-#' @importFrom broman runningmean time_axis
+#' @importFrom broman runningmean timeplot
 #'
 #' @export
 #'
@@ -28,10 +28,8 @@
 #' polar_h10$datetime <- convert_timestamp(polar_h10$time)
 #' n_pts <- running_datacount(polar_h10$datetime)
 #'
-#' xax <- broman::time_axis(polar_h10$datetime)
-#' broman::grayplot(polar_h10$datetime, n_pts, xat=NA, vlines=xax$x,
-#'                   xlab="Time", ylab="No. data points")
-#' axis(side=1, at=xax$x, labels=xax$label, tick=FALSE, mgp=c(2.1, 0.5, 0))
+#' broman::timeplot(polar_h10$datetime, n_pts,
+#'                  xlab="Time", ylab="No. data points")
 
 running_datacount <-
     function(times, window=1, at=NULL, n_at=NULL, tz=Sys.timezone())

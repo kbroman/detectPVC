@@ -18,7 +18,7 @@
 #'
 #' @return None.
 #'
-#' @importFrom broman time_axis
+#' @importFrom broman timeplot
 #' @importFrom graphics par axis
 #' @export
 #'
@@ -51,19 +51,15 @@ plot.pvc_stats <-
                  col="darkslateblue", lwd=2)
     {
         par(mar=mar)
-        xax <- broman::time_axis(x$time, 12)
-
         if(is.null(mgp.x)) mgp.x <- mgp
         if(is.null(mgp.y)) mgp.y <- mgp
 
         par(mfrow=c(2,1))
-        grayplot(x$time, x$pvc, type=type, ..., xat=NA, ylab=ylab_pvc, xlab=xlab,
-                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_pvc, col=col, lwd=lwd, vlines=xax$x)
-        axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
+        timeplot(x$time, x$pvc, type=type, ..., ylab=ylab_pvc, xlab=xlab,
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_pvc, col=col, lwd=lwd)
 
-        grayplot(x$time, x$hr, type=type, ..., xat=NA, ylab=ylab_hr, xlab=xlab,
-                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_hr, col=col, lwd=lwd, vlines=xax$x)
-        axis(side=1, mgp=mgp.x, at=xax$x, labels=xax$label, tick=FALSE)
+        timeplot(x$time, x$hr, type=type, ..., ylab=ylab_hr, xlab=xlab,
+                 xaxs=xaxs, yaxs=yaxs, ylim=ylim_hr, col=col, lwd=lwd)
     }
 
     internal_plot(x, ...)
