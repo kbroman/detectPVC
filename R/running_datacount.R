@@ -74,8 +74,10 @@ running_datacount <-
         wh <- (start < max(times) & end > max(times))
         window_len[wh] <- (max(times) - start[wh])
 
-        result[window_len > 0] <- result[window_len > 0] / (sRate * window_len[window_len>0]+1)
-        result[window_len == 0] <- 0 # use 0 rather than NA for 0/0
+        # now get proportion of expected
+        wh <- (window_len > 0)
+        result[wh] <- result[wh] / (sRate * window_len[wh] + 1)  # +1 because discrete
+        result[!wh] <- 0 # use 0 rather than NA for 0/0
     }
 
     result
