@@ -9,7 +9,9 @@ running_datacount(
   window = 1,
   at = NULL,
   n_at = NULL,
-  tz = Sys.timezone()
+  tz = Sys.timezone(),
+  return_prop = FALSE,
+  sRate = 1000000000/7682304
 )
 }
 \arguments{
@@ -22,6 +24,14 @@ running_datacount(
 \item{n_at}{Number of times at which to calculate the amount of data}
 
 \item{tz}{Time zone, to convert \code{times} using \code{\link[=convert_timestamp]{convert_timestamp()}}}
+
+\item{return_prop}{If true, return the expected proportion of
+observed data points within each window. Values will be
+slightly <1 even with complete data, due to discrete nature of
+time points.}
+
+\item{sRate}{Signal rate, as expected number of data points per
+second; needed if \code{return_prop=TRUE}}
 }
 \value{
 Vector of same length as \code{times}, with the number of data points in a sliding window

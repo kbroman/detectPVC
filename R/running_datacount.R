@@ -12,6 +12,14 @@
 #'
 #' @param tz Time zone, to convert `times` using [convert_timestamp()]
 #'
+#' @param return_prop If true, return the expected proportion of
+#'     observed data points within each window. Values will be
+#'     slightly <1 even with complete data, due to discrete nature of
+#'     time points.
+#'
+#' @param sRate Signal rate, as expected number of data points per
+#'     second; needed if `return_prop=TRUE`
+#'
 #' @return Vector of same length as `times`, with the number of data points in a sliding window
 #' centered at each time point.
 #'
@@ -32,7 +40,8 @@
 #'                  xlab="Time", ylab="No. data points")
 
 running_datacount <-
-    function(times, window=1, at=NULL, n_at=NULL, tz=Sys.timezone())
+    function(times, window=1, at=NULL, n_at=NULL, tz=Sys.timezone(),
+             return_prop=FALSE, sRate=1e9/7682304)
 {
 
     times <- convert_timestamp(times, tz=tz)
@@ -45,5 +54,29 @@ running_datacount <-
 
     result <- broman::runningmean(times, rep(1, length(times)), at=at, window=window, "sum")
     result[is.na(result)] <- 0
+
+    if(return_prop) {
+        # find lengths of windows in seconds that are within data range
+        start <- at - window/2
+        end <- at + window/2
+
+        window_len <- rep(window, length(at))
+
+        # window outside the range
+        wh <- (end < min(times) | start > max(times))
+        window_len[wh] <- 0
+
+        # window overlapping min(times)
+        wh <- (start < min(times) & end < max(times))
+        window_len[wh] <- (end[wh] - min(times))
+
+        # window overlapping max(times)
+        wh <- (start < max(times) & end > max(times))
+        window_len[wh] <- (max(times) - start[wh])
+
+        result[window_len > 0] <- result[window_len > 0] / (sRate * window_len[window_len>0]+1)
+        result[window_len == 0] <- 0 # use 0 rather than NA for 0/0
+    }
+
     result
 }

@@ -9,12 +9,13 @@ find_bad_segments(
   signal,
   absval_thresh = 2,
   runmean_thresh = 0.7,
-  missing_thresh = 70,
+  missing_thresh = 0.1,
   window = 0.2,
   min_gap = 2000,
   pad = 400,
   return_index = TRUE,
-  tz = Sys.timezone()
+  tz = Sys.timezone(),
+  sRate = 1000000000/7682304
 )
 }
 \arguments{
@@ -26,7 +27,7 @@ find_bad_segments(
 
 \item{runmean_thresh}{Threshold on running mean of absolute value of signal}
 
-\item{missing_thresh}{Maximum amount of missing data within 1 second}
+\item{missing_thresh}{Maximum amount of missing data within 1 second (as a proportion)}
 
 \item{window}{Window for running mean (in seconds)}
 
@@ -37,6 +38,9 @@ find_bad_segments(
 \item{return_index}{If TRUE, return indexes to \code{time}; otherwise return actual date/times.}
 
 \item{tz}{Timezone used by \code{\link[=convert_timestamp]{convert_timestamp()}}}
+
+\item{sRate}{Signal rate, as expected number of data points per
+second; needed if \code{return_prop=TRUE}.}
 }
 \value{
 Data frame with two columns: the start and end index for

@@ -11,7 +11,7 @@
 #'
 #' @param runmean_thresh Threshold on running mean of absolute value of signal
 #'
-#' @param missing_thresh Maximum amount of missing data within 1 second
+#' @param missing_thresh Maximum amount of missing data within 1 second (as a proportion)
 #'
 #' @param window Window for running mean (in seconds)
 #'
@@ -22,6 +22,9 @@
 #' @param return_index If TRUE, return indexes to `time`; otherwise return actual date/times.
 #'
 #' @param tz Timezone used by [convert_timestamp()]
+#'
+#' @param sRate Signal rate, as expected number of data points per
+#'     second; needed if `return_prop=TRUE`.
 #'
 #' @return Data frame with two columns: the start and end index for
 #' each identified bad segment.
@@ -35,8 +38,8 @@
 
 find_bad_segments <-
     function(time, signal, absval_thresh=2, runmean_thresh=0.7,
-             missing_thresh=70, window=0.2, min_gap=2000, pad=400,
-             return_index=TRUE, tz=Sys.timezone())
+             missing_thresh=0.1, window=0.2, min_gap=2000, pad=400,
+             return_index=TRUE, tz=Sys.timezone(), sRate=1e9/7682304)
 {
     stopifnot(length(time) == length(signal))
 
@@ -55,8 +58,8 @@ find_bad_segments <-
 
     # look for regions with lots of missing data
     # count data points every sec
-    n_data <- running_datacount(time)
-    w <- which(n_data < 130-missing_thresh)
+    prop_data <- running_datacount(time, return_prop=TRUE, sRate=sRate)
+    w <- which(prop_data < missing_thresh)
     if(length(w)>0) badsegs <- rbind(badsegs, vector_to_segments(w, min_gap))
     if(nrow(badsegs)==0) return(badsegs)
 

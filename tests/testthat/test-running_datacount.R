@@ -8,6 +8,9 @@ test_that("simple test of running_datacount", {
     n_pts <- running_datacount(polar_h10$time)
     expect_equal(n_pts, c(66:130, rep(131, 70), 130:66))
 
+    prop <- running_datacount(polar_h10$time, at=polar_h10$time, return_prop=TRUE)
+    expect_true(min(prop) > 0.9987)
+
     w <- seq(1, by=10, length=20)
     n_pts_sub <- running_datacount(polar_h10$time, at=polar_h10$time[w])
     expect_equal(n_pts_sub, n_pts[w])
