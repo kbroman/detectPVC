@@ -7,7 +7,7 @@
 most_common_date(times)
 }
 \arguments{
-\item{Vector}{of date/times}
+\item{times}{Vector of date/times}
 }
 \value{
 The most common data, as a character string in ISO format like 2024-05-26

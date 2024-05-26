@@ -2,7 +2,7 @@
 #'
 #' Return the most common date in a vector of date/times
 #'
-#' @param Vector of date/times
+#' @param times Vector of date/times
 #'
 #' @return The most common data, as a character string in ISO format like 2024-05-26
 #'
