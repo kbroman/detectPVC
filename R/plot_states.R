@@ -19,13 +19,15 @@
 #'
 #' @param tz Time zone for converting time stamps
 #'
-#' @param ... Passed to [graphics::plot()]
+#' @param ... Passed to [base::plot()]
 #'
 #' @return Data frame with start and end times and type of state
 #' (normal, bigeminy, trigeminy, omitted)
 #'
 #' @seealso [find_pvc_pattern()]
 #'
+#' @importFrom stats setNames
+#' @importFrom graphics axis rect
 #' @export
 #'
 #' @examples
@@ -147,7 +149,7 @@ plot_states <-
             if(is.null(mgp.y)) mgp.y <- mgp
 
             plot(0,0,type="n", xlab=xlab, ylab=ylab, xaxs=xaxs, yaxs=yaxs,
-                 xaxt="n", yaxt="n", xlim=c(0,60), ylim=ylim, las=las)
+                 xaxt="n", yaxt="n", xlim=c(0,60), ylim=ylim, las=las, ...)
             axis(side=1, at=seq(0, 60, by=10), mgp=mgp.x, tick=FALSE, las=las)
 
 

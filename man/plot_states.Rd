@@ -33,7 +33,7 @@ two columns: the start and end index for each interval to be ignored}
 
 \item{tz}{Time zone for converting time stamps}
 
-\item{...}{Passed to \code{\link[graphics:plot.default]{graphics::plot()}}}
+\item{...}{Passed to \code{\link[base:plot]{base::plot()}}}
 }
 \value{
 Data frame with start and end times and type of state
