@@ -101,8 +101,8 @@ plot_states <-
     all_one_date <- (first_last_dates[1] == first_last_dates[2])
 
     hours <- as.numeric(format(time_range, format="%H"))
-    ylim <- c(hours[1], hours[1] + floor(diff(as.numeric(time_range))/3600))
-    ylim <- ylim + c(-0.5, 0.5)
+    hour_limits <- c(hours[1], hours[1] + floor(diff(as.numeric(time_range))/3600))
+    hour_limits <- hour_limits + c(-0.5, 0.5)
 
     # need to pull off the hours from this
     # make a function that goes from date/time -> hour, min
@@ -139,7 +139,8 @@ plot_states <-
 
     plot_states_internal <-
         function(xlab="Minute", ylab="Hour", xaxs="i", yaxs="i",
-                 mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL, las=1, ...)
+                 mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL, las=1,
+                 ylim=hour_limits, ...)
 
         {
             if(is.null(mgp.x)) mgp.x <- mgp
