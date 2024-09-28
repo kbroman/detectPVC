@@ -45,6 +45,10 @@ read_multcsv <-
     }
     if(!is.null(dir)) files <- file.path(dir, files)
 
+    # omit files that are empty
+    files <- files[file.size(files) > 0]
+    if(length(files)==0) stop("No non-empty CSV files")
+
     cores <- setup_cluster(cores)
 
     result <- cluster_lapply(cores, files, read.csv)
