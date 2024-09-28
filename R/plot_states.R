@@ -173,5 +173,5 @@ plot_states <-
     plot_states_internal(...)
 
     rownames(result) <- 1:nrow(result)
-    result
+    invisible(result)
 }
