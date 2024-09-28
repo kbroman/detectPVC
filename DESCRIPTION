@@ -1,5 +1,5 @@
 Package: detectPVC
-Version: 0.1.17
+Version: 0.2.1
 Date: 2024-09-28
 Title: Detect Premature Venticular Complexes
 Description: Detect premature ventricular complexes (PVCs) in data from a Polar H10 chest-strap heart rate sensor.

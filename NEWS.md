@@ -1,4 +1,4 @@
-## detectPVC 0.1.17 (2024-09-28)
+## detectPVC 0.2.1 (2024-09-28)
 
 - Added function plot_states() for classifying PVC state as
   normal/bigeminy/trigeminy/omitted and making a plot
