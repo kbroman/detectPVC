@@ -27,6 +27,8 @@
 #' @importFrom stringr str_extract_all str_locate_all
 #' @export
 #'
+#' @seealso [plot_states()]
+#'
 #' @examples
 #' data(polar_h10)
 #' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)

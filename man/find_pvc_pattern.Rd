@@ -60,3 +60,6 @@ triplets <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
 normal <- find_pvc_pattern(polar_h10$time, peaks, pvc, omit_segments=bad_segs,
                            pattern="N+", min_length=10)
 }
+\seealso{
+\code{\link[=plot_states]{plot_states()}}
+}

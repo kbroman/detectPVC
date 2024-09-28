@@ -1,6 +1,6 @@
 Package: detectPVC
-Version: 0.1.16
-Date: 2024-05-26
+Version: 0.1.17
+Date: 2024-09-28
 Title: Detect Premature Venticular Complexes
 Description: Detect premature ventricular complexes (PVCs) in data from a Polar H10 chest-strap heart rate sensor.
 Author: Karl W Broman [aut, cre] (<https://orcid.org/0000-0002-4914-6671>)
@@ -31,5 +31,5 @@ LazyData: true
 Encoding: UTF-8
 ByteCompile: true
 VignetteBuilder: knitr
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Roxygen: list(markdown=TRUE)
