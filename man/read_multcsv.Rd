@@ -8,6 +8,7 @@ read_multcsv(
   dir = ".",
   files = NULL,
   dont_modify = FALSE,
+  omit_incomplete = TRUE,
   tz = Sys.timezone(),
   cores = 1
 )
@@ -21,6 +22,9 @@ read_multcsv(
 \item{dont_modify}{If TRUE, just rbind the file contents together. If FALSE,
 look for a \code{time} column and reorder the rows by that column, and then
 add a converted \code{datetime} column using \code{\link[=convert_timestamp]{convert_timestamp()}}.}
+
+\item{omit_incomplete}{If TRUE, omit any rows where the time stamp looks
+to be incomplete (having < 19 characters)}
 
 \item{tz}{Time zone, used if \code{dont_modify=FALSE} and there is a time
 column to convert.}

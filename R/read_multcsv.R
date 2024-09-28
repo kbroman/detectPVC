@@ -10,7 +10,10 @@
 #' @param dont_modify If TRUE, just rbind the file contents together. If FALSE,
 #' look for a `time` column and reorder the rows by that column, and then
 #' add a converted `datetime` column using [convert_timestamp()].
-
+#'
+#' @param omit_incomplete If TRUE, omit any rows where the time stamp looks
+#' to be incomplete (having < 19 characters)
+#'
 #' @param tz Time zone, used if `dont_modify=FALSE` and there is a time
 #' column to convert.
 #'
@@ -32,7 +35,8 @@
 #' @export
 
 read_multcsv <-
-    function(dir=".", files=NULL, dont_modify=FALSE, tz=Sys.timezone(), cores=1)
+    function(dir=".", files=NULL, dont_modify=FALSE, omit_incomplete=TRUE,
+             tz=Sys.timezone(), cores=1)
 {
     if(is.null(files)) {
         if(is.null(dir)) stop("Provide at least one of files or dir")
@@ -58,6 +62,10 @@ read_multcsv <-
     if(!dont_modify && "time" %in% colnames(result)) {
         result <- result[order(result$time), , drop=FALSE]
         result$datetime <- convert_timestamp(result$time, tz=tz)
+    }
+
+    if(omit_incomplete) { # drop rows with incomplete time stamps
+        result <- result[nchar(result$time) >= 19, ]
     }
 
     result
