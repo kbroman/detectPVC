@@ -154,14 +154,8 @@ plot_states <-
 
             n_y_ticks <- diff(range(ylim))
 
-            if(all_one_date) {
-                axis(side=2, at=pretty(ylim, n=n_y_ticks),
-                     mgp=mgp.y, tick=FALSE, las=las)
-            }
-            else {
-                p <- pretty(ylim, n=n_y_ticks)
-                axis(side=2, at=p, labels=p %% 24, mgp=mgp.y, tick=FALSE, las=las)
-            }
+            p <- pretty(ylim, n=n_y_ticks)
+            axis(side=2, at=p, labels=p %% 24, mgp=mgp.y, tick=FALSE, las=las)
 
             rect_col <- setNames(rect_col[1:4], c("N", "B", "T", "O"))
             segments$rect_col <- rect_col[segments$state]
