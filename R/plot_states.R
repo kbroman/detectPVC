@@ -41,7 +41,7 @@
 
 plot_states <-
     function(times, peaks, pvc, omit_segments=NULL,
-             min_length=6,
+             min_length=12,
              rect_col=c(blue="#0074d9", orange="#ff851b", green="#2ecc40", purple="#cc00dd"),
              tz=Sys.timezone(), ...)
 {
