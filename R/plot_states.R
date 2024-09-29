@@ -152,9 +152,14 @@ plot_states <-
             axis(side=1, at=seq(0, 60, by=10), mgp=mgp.x, tick=FALSE, las=las)
 
 
-            if(all_one_date) axis(side=2, at=pretty(ylim), mgp=mgp.y, tick=FALSE, las=las)
+            n_y_ticks <- diff(range(ylim))
+
+            if(all_one_date) {
+                axis(side=2, at=pretty(ylim, n=n_y_ticks),
+                     mgp=mgp.y, tick=FALSE, las=las)
+            }
             else {
-                p <- pretty(ylim)
+                p <- pretty(ylim, n=n_y_ticks)
                 axis(side=2, at=p, labels=p %% 24, mgp=mgp.y, tick=FALSE, las=las)
             }
 
