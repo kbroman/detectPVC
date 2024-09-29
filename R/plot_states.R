@@ -141,14 +141,14 @@ plot_states <-
     plot_states_internal <-
         function(xlab="Minute", ylab="Hour", xaxs="i", yaxs="i",
                  mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL, las=1,
-                 ylim=hour_limits, ...)
+                 ylim=hour_limits, xlim=c(0, 60), ...)
 
         {
             if(is.null(mgp.x)) mgp.x <- mgp
             if(is.null(mgp.y)) mgp.y <- mgp
 
             plot(0,0,type="n", xlab=xlab, ylab=ylab, xaxs=xaxs, yaxs=yaxs,
-                 xaxt="n", yaxt="n", xlim=c(0,60), ylim=ylim, las=las, ...)
+                 xaxt="n", yaxt="n", xlim=xlim, ylim=ylim, las=las, ...)
             axis(side=1, at=seq(0, 60, by=10), mgp=mgp.x, tick=FALSE, las=las)
 
 
