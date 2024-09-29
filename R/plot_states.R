@@ -141,7 +141,8 @@ plot_states <-
     plot_states_internal <-
         function(xlab="Minute", ylab="Hour", xaxs="i", yaxs="i",
                  mgp=c(2.1, 0.5, 0), mgp.x=NULL, mgp.y=NULL, las=1,
-                 ylim=hour_limits, xlim=c(0, 60), ...)
+                 ylim=hour_limits, xlim=c(0, 60), xaxt="s", yaxt="s",
+                 ...)
 
         {
             if(is.null(mgp.x)) mgp.x <- mgp
@@ -149,13 +150,16 @@ plot_states <-
 
             plot(0,0,type="n", xlab=xlab, ylab=ylab, xaxs=xaxs, yaxs=yaxs,
                  xaxt="n", yaxt="n", xlim=xlim, ylim=ylim, las=las, ...)
-            axis(side=1, at=seq(0, 60, by=10), mgp=mgp.x, tick=FALSE, las=las)
 
+            if(xaxt!="n") {
+                axis(side=1, at=pretty(xlim, n=6), mgp=mgp.x, tick=FALSE, las=las)
+            }
 
-            n_y_ticks <- diff(range(ylim))
-
-            p <- pretty(ylim, n=n_y_ticks)
-            axis(side=2, at=p, labels=p %% 24, mgp=mgp.y, tick=FALSE, las=las)
+            if(yaxt != "n") {
+                n_y_ticks <- diff(range(ylim))
+                p <- pretty(ylim, n=n_y_ticks)
+                axis(side=2, at=p, labels=p %% 24, mgp=mgp.y, tick=FALSE, las=las)
+            }
 
             rect_col <- setNames(rect_col[1:4], c("N", "B", "T", "O"))
             segments$rect_col <- rect_col[segments$state]
