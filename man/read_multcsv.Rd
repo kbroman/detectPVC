@@ -44,6 +44,9 @@ Read multiple CSV files all with the same columns and rbind them together
 At least one of \code{files} or \code{dir} must be provided.
 The files should all have the same set of columns.
 
+Files can be gzipped: If a file has name like 'file.csv.gz' it is
+gunzipped to a temporary directory and then read.
+
 If \code{dont_modify=FALSE} and there is a column \code{time}, the rows are
 reordered using this column and a \code{datetime} column is added,
 converting \code{time} with \code{\link[=convert_timestamp]{convert_timestamp()}}

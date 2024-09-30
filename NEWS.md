@@ -1,3 +1,8 @@
+## detectPVC 0.2.3 (2024-09-30)
+
+- read_multcsv can now read gzipped CSV files
+
+
 ## detectPVC 0.2.1 (2024-09-28)
 
 - Added function plot_states() for classifying PVC state as

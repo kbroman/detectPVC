@@ -25,6 +25,9 @@
 #' @details At least one of `files` or `dir` must be provided.
 #' The files should all have the same set of columns.
 #'
+#' Files can be gzipped: If a file has name like 'file.csv.gz' it is
+#' gunzipped to a temporary directory and then read.
+#'
 #' If `dont_modify=FALSE` and there is a column `time`, the rows are
 #' reordered using this column and a `datetime` column is added,
 #' converting `time` with [convert_timestamp()]
@@ -32,6 +35,7 @@
 #' @return A data.frame with the contents of all files row-binded together.
 #'
 #' @importFrom utils read.csv
+#' @importFrom R.utils gunzip
 #' @export
 
 read_multcsv <-
@@ -55,7 +59,7 @@ read_multcsv <-
 
     cores <- setup_cluster(cores)
 
-    result <- cluster_lapply(cores, files, read.csv)
+    result <- cluster_lapply(cores, files, read.csv_or_gz)
 
     result <- do.call("rbind", result)
 
@@ -69,4 +73,25 @@ read_multcsv <-
     }
 
     result
+}
+
+
+read.csv_or_gz <-
+    function(file, ...)
+{
+    if(grepl(".csv.gz$", file)) { # looks like gzipped csv
+        # temp file to contain unzipped contents
+        temp_file <- tempfile()
+
+        # unzip file
+        R.utils::gunzip(file, destname=temp_file, overwrite=TRUE, remove=FALSE)
+
+        # on exit, remove the temp file
+        on.exit(unlink(temp_file))
+
+        file <- temp_file
+    }
+
+    # read the actual file
+    return(read.csv(file, ...))
 }
