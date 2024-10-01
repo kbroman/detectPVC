@@ -2,6 +2,7 @@
 % Please edit documentation in R/plot_states.R
 \name{plot_states}
 \alias{plot_states}
+\alias{plot.states}
 \title{Plot PVC states}
 \usage{
 plot_states(
@@ -16,9 +17,25 @@ plot_states(
   draw = TRUE,
   ...
 )
+
+\method{plot}{states}(
+  x,
+  peaks,
+  pvc,
+  omit_segments = NULL,
+  min_length = 12,
+  rect_col = c(blue = "#0074d9", orange = "#ff851b", green = "#2ecc40", purple =
+    "#cc00dd"),
+  tz = Sys.timezone(),
+  draw = TRUE,
+  ...
+)
 }
 \arguments{
-\item{times}{Vector of times (integers as from Polar H10, datetimes, or character strings)}
+\item{times}{Vector of times (integers as from Polar H10, datetimes, or character strings)
+(Can also be on object of class \code{"states"}, that is the output of the present function,
+in which case the arguments \code{peaks}, \code{pvc}, \code{omit_segments}, and \code{min_length}, and \code{tz}
+are ignored.}
 
 \item{peaks}{Vector of peak indices as integers from 1 to \code{length(times)}}
 
@@ -37,6 +54,8 @@ two columns: the start and end index for each interval to be ignored}
 \item{draw}{If FALSE, don't actually make the plot}
 
 \item{...}{Passed to \code{\link[base:plot]{base::plot()}}}
+
+\item{x}{Object of class \code{"states"}, that is the output of the present function}
 }
 \value{
 Data frame with start and end times and type of state
@@ -56,5 +75,5 @@ pvc <- (peak_stats$RStime > 50)
 plot_states(polar_h10$time, peaks, pvc, omit_segments=bad_segs, xlim=c(50, 60))
 }
 \seealso{
-\code{\link[=find_pvc_pattern(), summary_states]{find_pvc_pattern(), summary_states()}}
+\code{\link[=find_pvc_pattern]{find_pvc_pattern()}}, \code{\link[=summary_states]{summary_states()}}
 }

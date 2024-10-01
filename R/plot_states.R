@@ -4,6 +4,9 @@
 #' normal, bigeminy, trigeminy, and make a plot of these
 #'
 #' @param times Vector of times (integers as from Polar H10, datetimes, or character strings)
+#'   (Can also be on object of class `"states"`, that is the output of the present function,
+#'   in which case the arguments `peaks`, `pvc`, `omit_segments`, and `min_length`, and `tz`
+#'   are ignored.
 #'
 #' @param peaks Vector of peak indices as integers from 1 to `length(times)`
 #'
@@ -26,7 +29,7 @@
 #' @return Data frame with start and end times and type of state
 #' (normal, bigeminy, trigeminy, omitted). Given class "states"
 #'
-#' @seealso [find_pvc_pattern(), summary_states()]
+#' @seealso [find_pvc_pattern()], [summary_states()]
 #'
 #' @importFrom stats setNames
 #' @importFrom graphics axis rect
@@ -47,37 +50,44 @@ plot_states <-
              rect_col=c(blue="#0074d9", orange="#ff851b", green="#2ecc40", purple="#cc00dd"),
              tz=Sys.timezone(), draw=TRUE, ...)
 {
-    times <- convert_timestamp(times, tz=tz)
-    stopifnot(all(peaks >= 1 & peaks <= length(times)))
-    stopifnot(length(pvc) == length(peaks))
 
     if(length(rect_col) < 4) { # if missing rectangle colors, pad with white
         rect_col <- c(rect_col, rep("white", 4-length(rect_col)))
     }
 
-    normal <- find_pvc_pattern(times, peaks, pvc, omit_segments, "N+",
-                               min_length=min_length, return_index=FALSE, tz=tz)
-    trig <- find_pvc_pattern(times, peaks, pvc, omit_segments, "(NNP)+",
-                             min_length=min_length, return_index=FALSE, tz=tz)
-    big <- find_pvc_pattern(times, peaks, pvc, omit_segments, "(NP)+",
-                            min_length=min_length, return_index=FALSE, tz=tz)
+    if("states" %in% class(times)) { # already calculated states
+        result <- segments <- times
+        time_range <- attr(times, "time_range")
+    } else {
+        times <- convert_timestamp(times, tz=tz)
+        stopifnot(all(peaks >= 1 & peaks <= length(times)))
+        stopifnot(length(pvc) == length(peaks))
 
-    # convert omit_segments from indexes to times
-    if(!is.null(omit_segments)) {
-        omit_segments <- as.data.frame( lapply(omit_segments,
-                                               function(index) times[index]) )
+        normal <- find_pvc_pattern(times, peaks, pvc, omit_segments, "N+",
+                                   min_length=min_length, return_index=FALSE, tz=tz)
+        trig <- find_pvc_pattern(times, peaks, pvc, omit_segments, "(NNP)+",
+                                 min_length=min_length, return_index=FALSE, tz=tz)
+        big <- find_pvc_pattern(times, peaks, pvc, omit_segments, "(NP)+",
+                                min_length=min_length, return_index=FALSE, tz=tz)
+
+        # convert omit_segments from indexes to times
+        if(!is.null(omit_segments)) {
+            omit_segments <- as.data.frame( lapply(omit_segments,
+                                                   function(index) times[index]) )
+        }
+
+        # combine into data frame
+        segments <- rbind( data.frame(start=normal[,1], end=normal[,2], state="N"),
+                          data.frame(start=trig[,1],   end=trig[,2], state="T"),
+                          data.frame(start=big[,1],    end=big[,2], state="B"),
+                          data.frame(start=omit_segments[,1], end=omit_segments[,2], state="O"))
+
+        result <- segments <- segments[order(segments[,1]),]
+
+        # range of times in data
+        time_range <- range(times)
     }
 
-    # combine into data frame
-    segments <- rbind( data.frame(start=normal[,1], end=normal[,2], state="N"),
-                     data.frame(start=trig[,1],   end=trig[,2], state="T"),
-                     data.frame(start=big[,1],    end=big[,2], state="B"),
-                     data.frame(start=omit_segments[,1], end=omit_segments[,2], state="O"))
-
-    result <- segments <- segments[order(segments[,1]),]
-
-    # range of times in data
-    time_range <- range(times)
 
     # pad to start and end of those hours
     first <- paste0(format(time_range[1], format="%Y-%m-%d"),
@@ -179,9 +189,23 @@ plot_states <-
 
     if(draw) plot_states_internal(...)
 
-    rownames(result) <- 1:nrow(result)
-    class(result) <- c("states", "data.frame")
-    attr(result, "time_range") <- range(times)
+    if(!("states" %in% class(result))) {
+        rownames(result) <- 1:nrow(result)
+        class(result) <- c("states", "data.frame")
+        attr(result, "time_range") <- range(times)
+    }
 
     invisible(result)
+}
+
+#' @rdname plot_states
+#' @param x Object of class `"states"`, that is the output of the present function
+#' @export
+plot.states <-
+    function(x, peaks, pvc, omit_segments=NULL,
+             min_length=12,
+             rect_col=c(blue="#0074d9", orange="#ff851b", green="#2ecc40", purple="#cc00dd"),
+             tz=Sys.timezone(), draw=TRUE, ...)
+{
+    plot_states(x, peaks, pvc, omit_segments, min_length, rect_col, tz, draw, ...)
 }
