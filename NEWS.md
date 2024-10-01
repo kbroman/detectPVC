@@ -1,6 +1,8 @@
-## detectPVC 0.2.3 (2024-09-30)
+## detectPVC 0.2.4 (2024-10-01)
 
 - read_multcsv can now read gzipped CSV files
+
+- Add3d summary_states() to summarize the output from plot_states()
 
 
 ## detectPVC 0.2.1 (2024-09-28)

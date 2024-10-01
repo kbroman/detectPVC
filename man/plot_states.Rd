@@ -13,6 +13,7 @@ plot_states(
   rect_col = c(blue = "#0074d9", orange = "#ff851b", green = "#2ecc40", purple =
     "#cc00dd"),
   tz = Sys.timezone(),
+  draw = TRUE,
   ...
 )
 }
@@ -33,11 +34,13 @@ two columns: the start and end index for each interval to be ignored}
 
 \item{tz}{Time zone for converting time stamps}
 
+\item{draw}{If FALSE, don't actually make the plot}
+
 \item{...}{Passed to \code{\link[base:plot]{base::plot()}}}
 }
 \value{
 Data frame with start and end times and type of state
-(normal, bigeminy, trigeminy, omitted)
+(normal, bigeminy, trigeminy, omitted). Given class "states"
 }
 \description{
 In a sequence of ECG peaks classified as PVC or not, find patterns
@@ -53,5 +56,5 @@ pvc <- (peak_stats$RStime > 50)
 plot_states(polar_h10$time, peaks, pvc, omit_segments=bad_segs, xlim=c(50, 60))
 }
 \seealso{
-\code{\link[=find_pvc_pattern]{find_pvc_pattern()}}
+\code{\link[=find_pvc_pattern(), summary_states]{find_pvc_pattern(), summary_states()}}
 }

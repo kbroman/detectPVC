@@ -19,12 +19,14 @@
 #'
 #' @param tz Time zone for converting time stamps
 #'
+#' @param draw If FALSE, don't actually make the plot
+#'
 #' @param ... Passed to [base::plot()]
 #'
 #' @return Data frame with start and end times and type of state
-#' (normal, bigeminy, trigeminy, omitted)
+#' (normal, bigeminy, trigeminy, omitted). Given class "states"
 #'
-#' @seealso [find_pvc_pattern()]
+#' @seealso [find_pvc_pattern(), summary_states()]
 #'
 #' @importFrom stats setNames
 #' @importFrom graphics axis rect
@@ -43,7 +45,7 @@ plot_states <-
     function(times, peaks, pvc, omit_segments=NULL,
              min_length=12,
              rect_col=c(blue="#0074d9", orange="#ff851b", green="#2ecc40", purple="#cc00dd"),
-             tz=Sys.timezone(), ...)
+             tz=Sys.timezone(), draw=TRUE, ...)
 {
     times <- convert_timestamp(times, tz=tz)
     stopifnot(all(peaks >= 1 & peaks <= length(times)))
@@ -175,8 +177,11 @@ plot_states <-
 
         }
 
-    plot_states_internal(...)
+    if(draw) plot_states_internal(...)
 
     rownames(result) <- 1:nrow(result)
+    class(result) <- c("states", "data.frame")
+    attr(result, "time_range") <- range(times)
+
     invisible(result)
 }
