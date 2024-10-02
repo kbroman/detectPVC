@@ -17,7 +17,7 @@ adjust_peaks(peaks, signal, window = 10)
 Vector of peaks, adjusted to hit the local max
 }
 \description{
-Adjust the estimated R peaks from \code{\link[rsleep:detect_rpeaks]{rsleep::detect_rpeaks()}} to hit the local maximum.
+Adjust the estimated R peaks from \code{rsleep::detect_rpeaks()} to hit the local maximum.
 }
 \examples{
 data(polar_h10)

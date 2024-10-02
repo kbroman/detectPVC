@@ -1,6 +1,6 @@
 #' Adjust R peaks to hit local max
 #'
-#' Adjust the estimated R peaks from [rsleep::detect_rpeaks()] to hit the local maximum.
+#' Adjust the estimated R peaks from `rsleep::detect_rpeaks()` to hit the local maximum.
 #'
 #' @param peaks Estimated R peaks (as index)
 #'
