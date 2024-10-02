@@ -44,7 +44,7 @@
 #'
 #' @return None.
 #'
-#' @details We use `par(mrow=c(n_panel, 1))` before creating the set of panels.
+#' @details We use `par(mfrow=c(n_panel, 1))` before creating the set of panels.
 #' However, in the case `n_panel==1`, we don't run `par(mfrow)` and so this can be
 #' used in a more general way.
 #'

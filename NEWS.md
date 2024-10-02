@@ -1,4 +1,4 @@
-## detectPVC 0.2.4 (2024-10-01)
+## detectPVC 0.2.4 (2024-10-02)
 
 - read_multcsv can now read gzipped CSV files
 
