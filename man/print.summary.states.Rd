@@ -4,7 +4,7 @@
 \alias{print.summary.states}
 \title{Print summary of states object}
 \usage{
-\method{print}{summary.states}(x, digits = 3, ...)
+\method{print}{summary.states}(x, digits = 1, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"summary.states"}, as produced by \code{\link[=summary_states]{summary_states()}}.}

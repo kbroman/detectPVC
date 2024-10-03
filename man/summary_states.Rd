@@ -17,7 +17,7 @@ summary_states(object)
 \value{
 A data frame with the different possible PVC states
 (normal, bigeminy, trigeminy, other, omitted, and total time)
-and amount of time spent in each, as well as the percent of the
+and amount of time (in min) spent in each, as well as the percent of the
 overall time.
 }
 \description{

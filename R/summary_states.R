@@ -6,7 +6,7 @@
 #'
 #' @return A data frame with the different possible PVC states
 #'     (normal, bigeminy, trigeminy, other, omitted, and total time)
-#'     and amount of time spent in each, as well as the percent of the
+#'     and amount of time (in min) spent in each, as well as the percent of the
 #'     overall time.
 #'
 #' @seealso [plot_states()]
@@ -32,10 +32,10 @@ function(object)
     tot_lengths <- tapply(lengths, factor(object[,3], states), sum)
 
     result <- data.frame(state=c(states, "NA", "total"),
-                         time=c(tot_lengths, tot_time - sum(tot_lengths), tot_time))
+                         time_min=c(tot_lengths, tot_time - sum(tot_lengths), tot_time)/60)
     rownames(result) <- c("normal", "bigeminy", "trigeminy", "omitted", "other", "total")
     result <- result[c(1:3,5,4,6),] # put omitted second-to-last
-    result <- cbind(result, percent=result$time/tot_time*100)
+    result <- cbind(result, percent=result$time_min/(tot_time/60)*100)
 
     class(result) <- c("summary.states", "data.frame")
     result
@@ -75,9 +75,9 @@ summary.states <-
 #' summary(st)
 
 print.summary.states <-
-    function(x, digits=3, ...)
+    function(x, digits=1, ...)
 {
-    print(as.data.frame(x, digits=digits))
+    print(as.data.frame(x), digits=digits)
 
     invisible(x)
 }
