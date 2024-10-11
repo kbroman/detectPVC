@@ -7,7 +7,7 @@ test_that("simple test of running_pvc_stats", {
     data(polar_h10)
     polar_h10 <- polar_h10[20001:30000,]
 
-    peaks <- detect_peaks(polar_h10$ecg)
+    peaks <- detect_peaks(polar_h10$time, polar_h10$ecg)
     peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
     pvc <- (peak_stats$RStime > 50)
 

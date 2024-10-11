@@ -6,7 +6,7 @@ test_that("simple test of calc_peak_stats", {
 
     polar_h10 <- polar_h10[401:800,]
 
-    peaks <- detect_peaks(polar_h10$ecg)
+    peaks <- detect_peaks(polar_h10$time, polar_h10$ecg)
     peakstats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
 
     expected <- structure(list(pmax = c(0.510, 0.520, 0.802, 0.368),

@@ -38,7 +38,7 @@ Makes a plot with two panels, of percent PVC vs time and heart rate vs time.
 \examples{
 data(polar_h10)
 bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
-peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
 peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks, omit_segments=bad_segs)
 pvc <- (peak_stats$RStime > 50)
 

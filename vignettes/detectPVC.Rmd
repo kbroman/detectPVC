@@ -43,7 +43,7 @@ polar_h10$datetime <- convert_timestamp(polar_h10$time)
 Use `detect_peaks()` to detect R peaks in the ECG trace.
 
 ```{r detect_peaks}
-peaks <- detect_peaks(polar_h10$ecg)
+peaks <- detect_peaks(polar_h10$time, polar_h10$ecg)
 ```
 
 Plot the first 20 seconds of the data, and add points above the peaks. The function

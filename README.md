@@ -70,7 +70,7 @@ totlength(bad_segs, polar_h10$time)
 Use `detect_peaks()` to detect "R" peaks in the ECG trace.
 
 ```{r}
-peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
 ```
 
 Plot the first 20 seconds of data, and add points above the peaks. The function
