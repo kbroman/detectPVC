@@ -3,6 +3,8 @@
 #' Detect R peaks in a raw ECG signal, using a modified version of
 #' `rsleep::detect_rpeaks()` but using a sliding window.
 #'
+#' @param time Vector of times at which ECG signal was measured (integers as from Polar H10, datetimes, or character strings)
+#'
 #' @param signal Numerical vector of ECG signal
 #'
 #' @param window Integer indicating the number of values to consider at one time
@@ -14,6 +16,8 @@
 #' @param peak_limit Limit factor on size of peaks relative to mean convolved signal.
 #' Larger values will ignore low-valued peaks.
 #'
+#' @param max_dist Maximum distance allowed between adjacent peaks
+
 #' @param omit_segments Segments to be omitted: a data frame with two
 #' columns: the start and end index for each interval
 #'
@@ -40,15 +44,19 @@
 #' @examples
 #' data(polar_h10)
 #' bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
-#' peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+#' peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
 
 detect_peaks <-
-    function(signal, window=80000, pad=window/4, sRate=1e9/7682304, peak_limit=1.5,
-             omit_segments=NULL, ..., return_index=TRUE, adjust=TRUE, cores=1)
+    function(time, signal, window=80000, pad=window/4, sRate=1e9/7682304, peak_limit=1.5,
+             max_dist=60/220, omit_segments=NULL, ..., return_index=TRUE, adjust=TRUE, cores=1)
 {
     if(!is.null(omit_segments)) {
         signal <- zero_segments(signal, omit_segments)
     }
+
+    stopifnot(length(time) == length(signal))
+
+    time <- convert_timestamp(time)
 
     # internal function to create non-overlapping windows with padding on each side
     window_info <- create_windows(length(signal), window=window, pad=pad)
@@ -70,9 +78,27 @@ detect_peaks <-
         result <- unique( adjust_peaks(result, signal) )
     }
 
+    # throw out closely spaced peaks
+    d <- as.numeric(diff(time[result]))
+    if(any(d < max_dist)) {
+        wh <- which(d < max_dist)
+
+        # smoothed squared differences
+        sqdiff <- diff(signal)^2
+        smsqdiff <- (c(sqdiff,0,0,0) + c(0,sqdiff, 0, 0) + c(0,0,sqdiff,0))/3
+
+        omit <- rep(-1, length(wh))
+        for(i in seq_along(wh)) {
+            peak1 <- result[wh[i]]
+            peak2 <- result[wh[i]+1]
+            omit[i] <- ifelse(smsqdiff[peak1] < smsqdiff[peak2], wh[i],  wh[i]+1)
+        }
+
+        result <- result[-omit]
+    }
+
     if(!return_index) { # convert to times
-        times <- seq(0, by=1/sRate, length.out = length(signal))
-        result <- times[result + 1] # not sure why the +1, but...
+        result <- time[result] # maybe need result + 1
     }
 
     result

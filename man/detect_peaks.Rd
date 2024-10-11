@@ -5,11 +5,13 @@
 \title{Detect R peaks in a raw ECG signal, using a sliding window}
 \usage{
 detect_peaks(
+  time,
   signal,
   window = 80000,
   pad = window/4,
   sRate = 1000000000/7682304,
   peak_limit = 1.5,
+  max_dist = 60/220,
   omit_segments = NULL,
   ...,
   return_index = TRUE,
@@ -18,6 +20,8 @@ detect_peaks(
 )
 }
 \arguments{
+\item{time}{Vector of times at which ECG signal was measured (integers as from Polar H10, datetimes, or character strings)}
+
 \item{signal}{Numerical vector of ECG signal}
 
 \item{window}{Integer indicating the number of values to consider at one time}
@@ -28,6 +32,8 @@ detect_peaks(
 
 \item{peak_limit}{Limit factor on size of peaks relative to mean convolved signal.
 Larger values will ignore low-valued peaks.}
+
+\item{max_dist}{Maximum distance allowed between adjacent peaks}
 
 \item{omit_segments}{Segments to be omitted: a data frame with two
 columns: the start and end index for each interval}
@@ -50,7 +56,7 @@ Detect R peaks in a raw ECG signal, using a modified version of
 \examples{
 data(polar_h10)
 bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
-peaks <- detect_peaks(polar_h10$ecg, omit_segments=bad_segs)
+peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
 }
 \seealso{
 \code{\link[=adjust_peaks]{adjust_peaks()}}

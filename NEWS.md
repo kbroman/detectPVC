@@ -1,3 +1,11 @@
+## detectPVC 0.3.1 (2024-10-11)
+
+- Revised find_peaks() to avoid extra called peaks by throwing one out
+  when two peaks are so close that heart rate would be > 220 bpm.
+  It now needs the times of the measurements, among the inputs, so
+  this is a breaking change.
+
+
 ## detectPVC 0.2.5 (2024-10-03)
 
 - read_multcsv can now read gzipped CSV files
