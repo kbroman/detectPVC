@@ -1,6 +1,6 @@
-context("detect_peaks")
+context("totlength")
 
-test_that("simple test of detect_peaks", {
+test_that("simple test of totlength", {
 
     data(polar_h10)
 
