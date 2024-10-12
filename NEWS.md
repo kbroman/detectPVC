@@ -1,4 +1,4 @@
-## detectPVC 0.3.1 (2024-10-11)
+## detectPVC 0.3.2 (2024-10-12)
 
 - Revised find_peaks() to avoid extra called peaks by throwing one out
   when two peaks are so close that heart rate would be > 220 bpm.

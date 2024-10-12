@@ -77,12 +77,12 @@ plot_states <-
         }
 
         # combine into data frame
-        segments <- rbind( data.frame(start=normal[,1], end=normal[,2], state="N"),
-                          data.frame(start=trig[,1],   end=trig[,2], state="T"),
-                          data.frame(start=big[,1],    end=big[,2], state="B"),
-                          data.frame(start=omit_segments[,1], end=omit_segments[,2], state="O"))
+        segments <- rbind( data.frame(start=normal[,1], end=normal[,2], state=rep("N", nrow(normal))),
+                          data.frame(start=trig[,1],   end=trig[,2], state=rep("T", nrow(trig))),
+                          data.frame(start=big[,1],    end=big[,2], state=rep("B", nrow(big))),
+                          data.frame(start=omit_segments[,1], end=omit_segments[,2], state=rep("O", nrow(omit_segments))))
 
-        result <- segments <- segments[order(segments[,1]),]
+        result <- segments <- segments[order(segments[,1]),,drop=FALSE]
 
         # range of times in data
         time_range <- range(times)
