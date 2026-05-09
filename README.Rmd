@@ -22,23 +22,20 @@ package to detect "R" peaks in the ECG signal.
 You can install the detectPVC package from
 [R-universe](https://kbroman.r-universe.dev/detectPVC).
 
-
-``` r
+```{r install_r-universe, eval=FALSE}
 install.packages("detectPVC", repos="https://kbroman.r-universe.dev")
 ```
 
 Alternatively, install it from [GitHub](https://github.com/kbroman/detectPVC).
 You first need to install the [remotes](https://remotes.r-lib.org) package.
 
-
-``` r
+```{r install_remotes, eval=FALSE}
 install.packages("remotes")
 ```
 
 Then use `remotes::install_github()`:
 
-
-``` r
+```{r, install_github, eval=FALSE}
 library(remotes)
 install_github("kbroman/detectPVC")
 ```
@@ -49,47 +46,41 @@ install_github("kbroman/detectPVC")
 
 The library comes with a 10-min sample data set, `polar_h10`.
 
-
-``` r
+```{r, load_package_and_data}
 library(detectPVC)
 data(polar_h10)
 ```
 
-
+```{r options, include=FALSE}
+knitr::opts_chunk$set(fig.width=11, fig.height=4,
+                      fig.path="figures/")
+```
 
 Convert the included times (which are time stamps from a Polar H10, in
 1e-9 seconds) to a standard date-time values.
 
-
-``` r
+```{r, convert_timestamps}
 polar_h10$datetime <- convert_timestamp(polar_h10$time)
 ```
 
 First detect bad segments in the data, with either wild values or
 missing data points.
 
-
-``` r
+```{r, find_bad_segments}
 bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
 ```
 
 For this example, there is just one bad segment, covering about
-7 sec.
+`r round(totlength(bad_segs, polar_h10$time))` sec.
 You can get the total covered length in seconds with `tot_length()`.
 
-
-``` r
+```{r length_bad_segments}
 totlength(bad_segs, polar_h10$time)
-```
-
-```
-## [1] 6.868205
 ```
 
 Use `detect_peaks()` to detect "R" peaks in the ECG trace.
 
-
-``` r
+```{r detect_peaks}
 peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
 ```
 
@@ -97,40 +88,32 @@ Plot the first 20 seconds of data, and add points above the peaks. The function
 `plot_ecg()` is a base-graphics-based plotting function with light
 gray grid lines.
 
-
-``` r
+```{r plot_data}
 v <- 1:(130*20)
 plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 ```
 
-![plot of chunk plot_data](figures/plot_data-1.png)
-
 Use `calc_peak_stats()` to calculate some statistics about each peak.
 
-
-``` r
+```{r calc_peak_stats}
 peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
 ```
 
 The simplest rule for classifying PVCs is to take `RStime > 50`.
 The statistic `RStime` is the time between the R and S peaks in milliseconds.
 
-
-``` r
+```{r classify_pvc}
 pvc <- (peak_stats$RStime > 50)
 ```
 
 Label the inferred PVCs with pink dots, and the others with green
 dots.
 
-
-``` r
+```{r plot_data_with_pvc}
 plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", "violetred")[pvc+1])
 ```
-
-![plot of chunk plot_data_with_pvc](figures/plot_data_with_pvc-1.png)
 
 In this 20 second window, there are 10 PVCs in 29 total beats.
 

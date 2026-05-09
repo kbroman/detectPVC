@@ -1,4 +1,6 @@
-.PHONY: doc vignette
+all: doc README.md
+
+.PHONY: doc
 
 # build package documentation
 doc:
@@ -7,3 +9,7 @@ doc:
 # run tests
 test:
 	R -e 'devtools::test()'
+
+# build README.md
+README.md: README.Rmd
+	R -e "knitr::knit('$<')"
