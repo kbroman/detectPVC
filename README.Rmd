@@ -56,6 +56,7 @@ knitr::opts_chunk$set(fig.width=11, fig.height=4,
                       fig.path="figures/")
 ```
 
+
 Convert the included times (which are time stamps from a Polar H10, in
 1e-9 seconds) to a standard date-time values.
 
@@ -115,7 +116,9 @@ plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", "violetred")[pvc+1])
 ```
 
-In this 20 second window, there are 10 PVCs in 29 total beats.
+In this `r round(totlength(rbind(range(v)), polar_h10$time))` second window,
+there are `r sum(peaks[pvc] %in% v)` PVCs
+in `r sum(peaks %in% v)` total beats.
 
 ---
 

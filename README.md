@@ -57,6 +57,7 @@ data(polar_h10)
 
 
 
+
 Convert the included times (which are time stamps from a Polar H10, in
 1e-9 seconds) to a standard date-time values.
 
@@ -132,7 +133,9 @@ points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", 
 
 ![plot of chunk plot_data_with_pvc](figures/plot_data_with_pvc-1.png)
 
-In this 20 second window, there are 10 PVCs in 29 total beats.
+In this 20 second window,
+there are 10 PVCs
+in 29 total beats.
 
 ---
 
