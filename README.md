@@ -20,10 +20,14 @@ package to detect "R" peaks in the ECG signal.
 ### Installation
 
 You can install the detectPVC package from
-[GitHub](https://github.com/kbroman/detectPVC).
+[R-universe](https://kbroman.r-universe.dev/detectPVC).
 
-You first need to install the
-[remotes](https://remotes.r-lib.org) package.
+```{r}
+install.packages("detectPVC", repos="https://kbroman.r-universe.dev")
+```
+
+Alternatively, install it from [GitHub](https://github.com/kbroman/detectPVC).
+You first need to install the [remotes](https://remotes.r-lib.org) package.
 
 ```{r}
 install.packages("remotes")
