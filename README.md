@@ -59,7 +59,7 @@ data(polar_h10)
 
 
 Convert the included times (which are time stamps from a Polar H10, in
-1e-9 seconds) to a standard date-time values.
+1e-9 seconds) to standard date-time values.
 
 
 ``` r
