@@ -71,7 +71,7 @@ missing data points.
 
 
 ``` r
-bad_segs <- find_bad_segments(polar_h10$time, polar_h10$ecg)
+bad_segs <- find_bad_segments(polar_h10$datetime, polar_h10$ecg)
 ```
 
 For this example, there is just one bad segment, covering about
@@ -80,7 +80,7 @@ You can get the total covered length in seconds with `tot_length()`.
 
 
 ``` r
-totlength(bad_segs, polar_h10$time)
+totlength(bad_segs, polar_h10$datetime)
 ```
 
 ```
@@ -91,7 +91,7 @@ Use `detect_peaks()` to detect "R" peaks in the ECG trace.
 
 
 ``` r
-peaks <- detect_peaks(polar_h10$time, polar_h10$ecg, omit_segments=bad_segs)
+peaks <- detect_peaks(polar_h10$datetime, polar_h10$ecg, omit_segments=bad_segs)
 ```
 
 Plot the first 20 seconds of data, and add points above the peaks. The function
@@ -100,7 +100,7 @@ gray grid lines.
 
 
 ``` r
-v <- 1:(130*20)
+v <- get_time_interval(polar_h10$datetime, start=polar_h10$datetime[1], length=20)
 plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 ```
@@ -111,7 +111,7 @@ Use `calc_peak_stats()` to calculate some statistics about each peak.
 
 
 ``` r
-peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
+peak_stats <- calc_peak_stats(polar_h10$datetime, polar_h10$ecg, peaks)
 ```
 
 The simplest rule for classifying PVCs is to take `RStime > 50`.
