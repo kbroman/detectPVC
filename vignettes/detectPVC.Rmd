@@ -25,33 +25,53 @@ package to detect R peaks in the ECG signal.
 
 ### Usage
 
-The library comes with a ~10 min sample data set, `polar_h10`.
+The library comes with a 10-min sample data set, `polar_h10`.
 
-```{r load_data}
+```{r, load_package_and_data}
 library(detectPVC)
 data(polar_h10)
 ```
 
-Convert the included times (which are time stamps from a Polar H10, in
-nanoseconds) to a standard date-time values.
+```{r options, include=FALSE}
+knitr::opts_chunk$set(fig.width=11, fig.height=4,
+                      fig.path="figures/")
+```
 
-```{r convert_timestamp}
+
+Convert the included times (which are time stamps from a Polar H10, in
+1e-9 seconds) to standard date-time values.
+
+```{r, convert_timestamps}
 polar_h10$datetime <- convert_timestamp(polar_h10$time)
 ```
 
+First detect bad segments in the data, with either wild values or
+missing data points.
 
-Use `detect_peaks()` to detect R peaks in the ECG trace.
-
-```{r detect_peaks}
-peaks <- detect_peaks(polar_h10$time, polar_h10$ecg)
+```{r, find_bad_segments}
+bad_segs <- find_bad_segments(polar_h10$datetime, polar_h10$ecg)
 ```
 
-Plot the first 20 seconds of the data, and add points above the peaks. The function
+For this example, there is just one bad segment, covering about
+`r round(totlength(bad_segs, polar_h10$datetime))` sec.
+You can get the total covered length in seconds with `tot_length()`.
+
+```{r length_bad_segments}
+totlength(bad_segs, polar_h10$datetime)
+```
+
+Use `detect_peaks()` to detect "R" peaks in the ECG trace.
+
+```{r detect_peaks}
+peaks <- detect_peaks(polar_h10$datetime, polar_h10$ecg, omit_segments=bad_segs)
+```
+
+Plot the first 20 seconds of data, and add points above the peaks. The function
 `plot_ecg()` is a base-graphics-based plotting function with light
 gray grid lines.
 
-```{r plot_ecg}
-v <- 1:(130*20)
+```{r plot_data}
+v <- get_time_interval(polar_h10$datetime, start=polar_h10$datetime[1], length=20)
 plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 ```
@@ -59,7 +79,7 @@ points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col="slateblue")
 Use `calc_peak_stats()` to calculate some statistics about each peak.
 
 ```{r calc_peak_stats}
-peak_stats <- calc_peak_stats(polar_h10$time, polar_h10$ecg, peaks)
+peak_stats <- calc_peak_stats(polar_h10$datetime, polar_h10$ecg, peaks)
 ```
 
 The simplest rule for classifying PVCs is to take `RStime > 50`.
@@ -72,12 +92,11 @@ pvc <- (peak_stats$RStime > 50)
 Label the inferred PVCs with pink dots, and the others with green
 dots.
 
-```{r plot_ecg_again}
+```{r plot_data_with_pvc}
 plot_ecg(polar_h10$datetime[v], polar_h10$ecg[v])
 points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", "violetred")[pvc+1])
 ```
 
-In this 20 second window, there are `r sum(pvc[peaks %in% v])` PVCs in
-`r sum(peaks %in% v)` total beats.
-
----
+In this `r round(totlength(rbind(range(v)), polar_h10$datetime))` second window,
+there are `r sum(peaks[pvc] %in% v)` PVCs
+in `r sum(peaks %in% v)` total beats.
