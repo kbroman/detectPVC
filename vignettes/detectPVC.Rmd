@@ -19,6 +19,7 @@ body {
   margin-left: auto;
   margin-right: auto;
 }
+img { border: 0; }
 </style>
 
 [![R-CMD-check](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml)
