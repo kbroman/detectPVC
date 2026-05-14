@@ -1,4 +1,4 @@
-all: doc README.md
+all: doc README.md docs/detectPVC.html
 
 .PHONY: doc
 
@@ -13,3 +13,10 @@ test:
 # build README.md
 README.md: README.Rmd
 	R -e "knitr::knit('$<')"
+
+docs/detectPVC.html: vignettes/detectPVC.Rmd docs/detectPVC_logo.png
+	cd $(<D);R -e "rmarkdown::render('$(<F)')"
+	mv $(<D)/$(@F) $@
+
+docs/detectPVC_logo.png: figures/detectPVC_logo.png
+	cp $< $@
