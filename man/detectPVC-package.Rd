@@ -13,7 +13,7 @@ Detect premature ventricular complexes (PVCs) in data from a Polar H10 chest-str
 \section{Vignette}{
 
 \itemize{
-\item \href{https://kbroman.org/detectPVC}{detectPVC User Guide}
+\item \href{https://kbroman.org/detectPVC/}{detectPVC User Guide}
 }
 }
 
