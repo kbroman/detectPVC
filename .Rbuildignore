@@ -1,6 +1,7 @@
 ^LICENSE\.md$
 ^Makefile$
 ^\.github$
-figures/
+^figures/
+^vignette/figures/
 ^README\.Rmd$
 docs/
