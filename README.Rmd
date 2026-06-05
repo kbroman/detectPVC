@@ -1,4 +1,4 @@
-## detectPVC - detect premature ventricular complexes with Polar H10 <a href="https://github.com/kbroman/detectPVC"><img src="man/figures/logo.png" align="right" height="138" alt="detectPVC logo"/></a>
+## detectPVC - detect premature ventricular complexes with Polar H10 <a href="https://github.com/kbroman/detectPVC"><img src="figures/detectPVC_logo.png" align="right" height="138" alt="detectPVC logo"/></a>
 
 [![R-CMD-check](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/kbroman/detectPVC/actions/workflows/R-CMD-check.yaml)
 [![r-universe badge](https://kbroman.r-universe.dev/detectPVC/badges/version)](https://kbroman.r-universe.dev/detectPVC)
