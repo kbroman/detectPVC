@@ -131,3 +131,8 @@ points(polar_h10$datetime[peaks], polar_h10$ecg[peaks], pch=16, col=c("green3", 
 In this `r round(totlength(rbind(range(v)), polar_h10$datetime))` second window,
 there are `r sum(peaks[pvc] %in% v)` PVCs
 in `r sum(peaks %in% v)` total beats.
+
+---
+
+[![CC BY](https://i.creativecommons.org/l/by/3.0/88x31.png)](https://creativecommons.org/licenses/by/3.0/)
+&nbsp; &nbsp; [Karl Broman](https://kbroman.org/)
