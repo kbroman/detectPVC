@@ -14,9 +14,10 @@ test:
 README.md: README.Rmd man/figures/logo.png
 	R -e "knitr::knit('$<')"
 
-docs/detectPVC.html: vignettes/detectPVC.Rmd man/figures/logo.png
+docs/detectPVC.html: vignettes/detectPVC.Rmd man/figures/logo.png docs/badges.html docs/paste_badges.R
 	cd $(<D);R -e "rmarkdown::render('$(<F)')"
 	mv $(<D)/$(@F) $@
+	cd $(@D);paste_badges.R $(@F)
 
 docs/detectPVC_logo.png: man/figures/logo.png
 	cp $< $@
