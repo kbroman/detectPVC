@@ -1,3 +1,7 @@
+## detectPVC 0.3.3 (2026-07-06)
+
+- Cosmetic improvements (package logo etc)
+
 ## detectPVC 0.3.2 (2024-10-12)
 
 - Revised find_peaks() to avoid extra called peaks by throwing one out
