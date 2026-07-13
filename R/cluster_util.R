@@ -22,13 +22,13 @@ setup_cluster <-
     if(is_cluster(cores)) return(cores)
 
     if(is.null(cores) || is.na(cores)) cores <- 1
-    if(cores==0) cores <- parallel::detectCores() # if 0, detect cores
+    if(cores==0) cores <- max(1, parallel::detectCores()-1, na.rm=TRUE) # if 0, detect cores
     if(is.na(cores)) cores <- 1
 
     if(cores > 1 && Sys.info()[1] == "Windows") { # windows doesn't support mclapply
         cores <- parallel::makeCluster(cores)
         # the following calls on.exit() in the function that called this one
-        # see http://stackoverflow.com/a/20998531
+        # see https://stackoverflow.com/a/20998531
         do.call("on.exit",
                 list(quote(parallel::stopCluster(cores))),
                 envir=parent.frame())

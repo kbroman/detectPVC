@@ -1,6 +1,11 @@
-## detectPVC 0.3.3 (2026-07-06)
+## detectPVC 0.3.4 (2026-07-13)
 
 - Cosmetic improvements (package logo etc)
+
+- For parallel computing, use of `cores=0` argument now results in all
+  but one core (`parallel::detectCores()-1`) rather than **all**
+  cores.
+
 
 ## detectPVC 0.3.2 (2024-10-12)
 
